@@ -9,10 +9,11 @@
     <title>CourseRoots</title>
 
     <!-- Bootstrap core CSS -->
-    <!-- <link rel="stylesheet" href="libraries/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="/libraries/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
     <link href="/stylesheets/main.css" rel="stylesheet">
+    <link href="/stylesheets/course.css" rel="stylesheet">
   </head>
 
   <body>
@@ -28,10 +29,8 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Welcome Tim!</a>
             </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="/home">Home
-                <span class="sr-only">(current)</span>
-              </a>
+            <li class="nav-item">
+              <a class="nav-link" href="/home">Home</a>
             </li>
           </ul>
         </div>
@@ -42,39 +41,33 @@
     <div id="wrapper">
       <!-- Sidebar -->
       <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-          <a href="/home/1"><li>Course 1: Civil and Environmental Engineering</li></a>
-          <a href="/home/2"><li>Course 2: Mechanical Engineering</li></a>
-          <a href="/home/3"><li>Course 3: Materials Science and Engineering</li></a>
-          <a href="/home/4"><li>Course 4: Architecture</li></a>
-          <a href="/home/5"><li>Course 5: Chemistry</li></a>
-          <a href="/home/6"><li>Course 6: Electrical Engineering and Computer Science</li></a>
-          <a href="/home/7"><li>Course 7: Biology</li></a>
-          <a href="/home/8"><li>Course 8: Physics</li></a>
-          <a href="/home/9"><li>Course 9: Brain and Cognitive Sciences</li></a>
-          <a href="/home/10"><li>Course 10: Chemical Engineering</li></a>
-          <a href="/home/11"><li>Course 11: Urban Studies and Planning</li></a>
-          <a href="/home/12"><li>Course 12: Earth, Atmospheric, and Planetary Sciences</li></a>
-          <a href="/home/14"><li>Course 14: Economics</li></a>
-          <a href="/home/15"><li>Course 15: Management</li></a>
-          <a href="/home/16"><li>Course 16: Aeronautics and Astronautics</li></a>
-          <a href="/home/17"><li>Course 17: Political Science</li></a>
-          <a href="/home/18"><li>Course 18: Mathematics</li></a>
-          <a href="/home/20"><li>Course 20: Biological Engineering</li></a>
-          <a href="/home/21"><li>Course 21: Humanities</li></a>
-          <a href="/home/21A"><li>Course 21A: Anthropology</li></a>
-          <a href="/home/21G"><li>Course 21G: Global Studies and Languages</li></a>
-          <a href="/home/21H"><li>Course 21H: History</li></a>
-          <a href="/home/21L"><li>Course 21L: Literature</li></a>
-          <a href="/home/21M"><li>Course 21M: Music and Theater Arts</li></a>
-          <a href="/home/21W"><li>Course 21W/CMS: Comparative Media Studies/Writing</li></a>
-          <a href="/home/22"><li>Course 22: Nuclear Science and Engineering</li></a>
-          <a href="/home/24"><li>Course 24: Linguistics and Philosophy</li></a>
-          <a href="/home/HST"><li>HST: Health Sciences and Technology</li></a>
-          <a href="/home/IDS"><li>IDS: Data, Systems, and Society</li></a>
-          <a href="/home/MAS"><li>MAS: Media Arts and Sciences</li></a>
-          <a href="/home/STS"><li>STS: Science, Technology, and Society</li></a>
-        </ul>
+        <div class="sidebar-nav">
+          <div class="form-group">
+            <label for="year_min" class="control-label">Year:</label><br/>
+            <input id="year_min" type="text" class="form-control short-text" placeholder="From">
+            <input id="year_max" type="text" class="form-control short-text" placeholder="To">
+          </div>
+          <div class="form-group">
+            <label for="term" class="control-label">Term:</label>
+            <select id="term" class="form-control" name="term">
+                <option value="upload_time">Any</option>
+                <option value="upload_time">Fall</option>
+                <option value="upload_time">IAP</option>
+                <option value="upload_time">Spring</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="taught_by" class="control-label">Taught by:</label>
+            <input id="taught_by" type="text" class="form-control" placeholder="Instructor">
+          </div>
+          <div class="form-group">
+            <label for="upload_by" class="control-label">Uploaded by:</label>
+            <input id="upload_by" type="text" class="form-control" placeholder="User">
+          </div>
+          <button type="button" id="apply-filter" class="btn btn-secondary" data-toggle="button" aria-pressed="false" autocomplete="off">
+            Apply
+          </button>
+        </div>
       </div>
       <!-- /#sidebar-wrapper -->
 
@@ -84,7 +77,7 @@
 
           <div id="search-row" class="row">
             <button type="button" id="sidebar-toggle" class="btn btn-secondary" data-toggle="button" aria-pressed="false" autocomplete="off">
-              All Courses
+              Filter
             </button>
 
             <div class="col-lg-6 col-md-4 col-sm-4 search-bar">
@@ -97,7 +90,7 @@
             </div>
             <!-- /.search-bar -->
 
-            <!-- <div class="form-inline">
+            <div class="form-inline">
               <label for="sort" class="control-label">Sort by:</label>
               <select id="sort" class="form-control" name="sort">
                   <option value="upload_time">Upload Time</option>
@@ -105,35 +98,17 @@
                   <option value="year">Year</option>
                   <option value="number">Subject Number</option>
               </select>
-            </div> -->
+            </div>
             <!-- /.form-inline -->
           </div>
           <!-- /#search-row -->
 
           <!-- Row Heading -->
-          <h2 class="my-4">Featured</h2>
-          <div id="notes-featured" class="row"></div>
-
-          <!-- Row Heading -->
-          <h2 class="my-4">Course 6: Electrical Engineering and Computer Science
-            <a href="#">See more</a>
-          </h2>
-          <div id="notes-6" class="row"></div>
-
-          <!-- Row Heading -->
-          <h2 class="my-4">Course 10: Chemical Engineering
-            <a href="#">See more</a>
-          </h2>
-          <div id="notes-10" class="row"></div>
-
-          <!-- Row Heading -->
-          <h2 class="my-4">Course 16: Aeronautics and Astronautics
-            <a href="#">See more</a>
-          </h2>
-          <div id="notes-16" class="row"></div>
+          <h2 class="my-4">{{ deptHeader }}</h2>
+          <div id="notes" class="row"></div>
 
           <!-- Pagination -->
-          <ul class="pagination justify-content-center">
+          <!-- <ul class="pagination justify-content-center">
             <li class="page-item">
               <a class="page-link" href="#" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
@@ -155,7 +130,7 @@
                 <span class="sr-only">Next</span>
               </a>
             </li>
-          </ul>
+          </ul> -->
 
         </div>
         <!-- /.container -->
@@ -183,6 +158,9 @@
         $("#wrapper").toggleClass("toggled");
       });
     </script>
-    <script src="/javascripts/main.js"></script>
+    <script>
+      var deptID = "{{ deptID }}";
+    </script>
+    <script src="/javascripts/course.js"></script>
   </body>
 </html>

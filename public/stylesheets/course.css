@@ -1,0 +1,12 @@
+.sidebar-nav {
+  padding: 20px;
+}
+
+.sidebar-nav label {
+  color: #ffffff;
+}
+
+.short-text {
+  display: inline-block;
+  width: 48%;
+}

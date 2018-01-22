@@ -1,6 +1,40 @@
 var express = require('express');
 var router = express.Router();
 
+const deptHeaders = {
+  '1': "Course 1: Civil and Environmental Engineering",
+  '2': "Course 2: Mechanical Engineering",
+  '3': "Course 3: Materials Science and Engineering",
+  '4': "Course 4: Architecture",
+  '5': "Course 5: Chemistry",
+  '6': "Course 6: Electrical Engineering and Computer Science",
+  '7': "Course 7: Biology",
+  '8': "Course 8: Physics",
+  '9': "Course 9: Brain and Cognitive Sciences",
+  '10': "Course 10: Chemical Engineering",
+  '11': "Course 11: Urban Studies and Planning",
+  '12': "Course 12: Earth, Atmospheric, and Planetary Sciences",
+  '14': "Course 14: Economics",
+  '15': "Course 15: Management",
+  '16': "Course 16: Aeronautics and Astronautics",
+  '17': "Course 17: Political Science",
+  '18': "Course 18: Mathematics",
+  '20': "Course 20: Biological Engineering",
+  '21': "Course 21: Humanities",
+  '21A': "Course 21A: Anthropology",
+  '21G': "Course 21G: Global Studies and Languages",
+  '21H': "Course 21H: History",
+  '21L': "Course 21L: Literature",
+  '21M': "Course 21M: Music and Theater Arts",
+  '21W': "Course 21W/CMS: Comparative Media Studies/Writing",
+  '22': "Course 22: Nuclear Science and Engineering",
+  '24': "Course 24: Linguistics and Philosophy",
+  'HST': "HST: Health Sciences and Technology",
+  'IDS': "IDS: Data, Systems, and Society",
+  'MAS': "MAS: Media Arts and Sciences",
+  'STS': "STS: Science, Technology, and Society"
+}
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('landing');
@@ -10,6 +44,12 @@ router.get('/', function(req, res, next) {
 router.get('/home', function(req, res, next) {
   let userInfo = { name: "Meowy", id: "123456" };
   res.render('main', { thisUser: userInfo });
+});
+
+/* GET main page by department. */
+router.get('/home/:dept', function(req, res, next) {
+  let deptID = req.params.dept;
+  res.render('course', { deptID: deptID, deptHeader: deptHeaders[deptID] });
 });
 
 /* GET note page. */
