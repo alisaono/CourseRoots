@@ -87,7 +87,7 @@
               All Courses
             </button>
 
-            <div class="col-lg-6 search-bar">
+            <div class="col-lg-6 col-md-4 col-sm-4 search-bar">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search for...">
                 <span class="input-group-btn">
@@ -100,10 +100,10 @@
             <div class="form-inline">
               <label for="sort" class="control-label">Sort by:</label>
               <select id="sort" class="form-control" name="sort">
-                  <option value="upload_time">Upload Dates</option>
-                  <option value="popular">Popularity</option>
-                  <option value="year">Years</option>
-                  <option value="subject">Subject Numbers</option>
+                  <option value="upload_time">Upload Time</option>
+                  <option value="popularity">Popularity</option>
+                  <option value="year">Year</option>
+                  <option value="number">Subject Number</option>
               </select>
             </div>
             <!-- /.form-inline -->
@@ -111,294 +111,26 @@
           <!-- /#search-row -->
 
           <!-- Row Heading -->
-          <h2 class="my-4">Most Recent</h2>
-
-          <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /.row -->
+          <h2 class="my-4">Featured</h2>
+          <div id="notes-featured" class="row"></div>
 
           <!-- Row Heading -->
-          <h2 class="my-4">Course 1: Civil Engineering
+          <h2 class="my-4">Course 6: Electrical Engineering and Computer Science
             <a href="#">See more</a>
           </h2>
-
-          <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /.row -->
+          <div id="notes-6" class="row"></div>
 
           <!-- Row Heading -->
-          <h2 class="my-4">Course 2: Mechanical Engineering
+          <h2 class="my-4">Course 10: Chemical Engineering
             <a href="#">See more</a>
           </h2>
-
-          <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /.row -->
+          <div id="notes-10" class="row"></div>
 
           <!-- Row Heading -->
-          <h2 class="my-4">Course 3: Materials Science and Engineering
+          <h2 class="my-4">Course 16: Aeronautics and Astronautics
             <a href="#">See more</a>
           </h2>
-
-          <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 note-item">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/600x400" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">18.06</a>
-                  </h4>
-                  <p class="card-text">
-                    Linear Algebra<br/>
-                    2017 Spring<br/>
-                    Taught by Steven Johnson<br/>
-                    Uploaded by Alisa
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /.row -->
+          <div id="notes-16" class="row"></div>
 
           <!-- Pagination -->
           <ul class="pagination justify-content-center">
@@ -446,11 +178,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
     <!-- <script src="libraries/bootstrap.bundle.min.js"></script> -->
 
-    <!-- Menu Toggle Script -->
     <script>
       $("#sidebar-toggle").on('click', function() {
         $("#wrapper").toggleClass("toggled");
       });
     </script>
+    <script src="javascripts/main.js"></script>
   </body>
 </html>
