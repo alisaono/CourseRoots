@@ -1,0 +1,101 @@
+/*
+ * Sidebar inspired by:
+ *  Start Bootstrap - Simple Sidebar (https://startbootstrap.com/template-overviews/simple-sidebar)
+ *  Copyright 2013-2017 Start Bootstrap
+ *  Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-simple-sidebar/blob/master/LICENSE)
+ */
+
+body {
+  padding-top: 54px;
+  overflow-x: hidden;
+}
+
+/* Wrappers for sidebar */
+#wrapper {
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+  padding-left: 250px; /* i.e. width of side nav bar */
+}
+
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 250px; /* i.e. width of side nav bar */
+  width: 0;
+  height: 100%;
+  margin-left: -250px; /* i.e. width of side nav bar */
+  overflow-y: scroll;
+  background: #1b1b1b;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 250px; /* i.e. width of side nav bar */
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  margin-right: -250px; /* i.e. width of side nav bar */
+}
+
+/* Sidebar */
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  margin: 0;
+  padding: 0 0 54px 0;
+  list-style: none;
+}
+
+.sidebar-nav li {
+  display: block;
+  padding: 20px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar-nav li:hover {
+  cursor: pointer;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Search options */
+#search-row {
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.search-bar .btn {
+  border: 1px solid #ced4da;
+}
+
+.form-inline > .control-label {
+  margin-right: 10px;
+}
+
+/* Notes */
+h2 > a {
+  margin-left: 10px;
+  font-size: 0.6em;
+}
+
+.note-item {
+  margin-bottom: 30px;
+}
+
+.pagination {
+  margin-bottom: 30px;
+}
