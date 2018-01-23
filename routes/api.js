@@ -3,23 +3,8 @@ var firebase = require("firebase");
 
 var router = express.Router();
 
-var notesByDept = {
-  6: [
-    { dept: "6", number: "6.006", title: "Algorithm", year: "2015" },
-    { dept: "6", number: "6.01", title: "Intro to EECS", year: "2016" },
-  ],
-  10: [
-    { dept: "10", number: "10.10", title: "Intro to ChemE", year: "2014" },
-    { dept: "10", number: "10.301", title: "Fluid Mechanics", year: "2016" },
-  ],
-  16: [
-    { dept: "16", number: "16.09", title: "Statistics and Probability", year: "2015" },
-    { dept: "16", number: "16.100", title: "Aerodynamics", year: "2012" },
-  ],
-}
-
 var SECRETS = require('../config');
-var fbConfig = {
+let fbConfig = {
   apiKey: SECRETS.FIREBASE.API_KEY,
   authDomain: SECRETS.FIREBASE.PRJ_ID + ".firebaseapp.com",
   databaseURL: "https://" + SECRETS.FIREBASE.DB_NAME + ".firebaseio.com",
@@ -27,38 +12,55 @@ var fbConfig = {
 };
 
 firebase.initializeApp(fbConfig);
-var database = firebase.database();
+let database = firebase.database();
 
 /* ILLEGAL access. */
 router.get('/', function(req, res, next) {
   res.render('error',{ message : "Error 401 - Unauthorized" });
 });
 
-/* GET all notes. */
-router.get('/notes', function(req, res, next) {
-  // res.json(notesByDept);
-  var ref = database.ref("/notes/");
-  ref.once('value').then(function(snapshot) {
-    var notes = snapshot.val();
-    res.json(notes);
+/* GET all notes. OLD */
+// router.get('/notes', function(req, res, next) {
+//   let ref = database.ref("/notes/");
+//   ref.once("value").then(function(snapshot) {
+//     let notes = snapshot.val();
+//     res.json(notes);
+//   });
+// });
+
+/* GET featured notes. */
+router.get('/notes/featured', function(req, res, next) {
+  let ref = database.ref("/note_by_dept/")
+  ref.orderByChild("upload_time").limitToLast(4).once("value").then(function(snapshot) {
+    let notes = snapshot.val();
+    let extracted = {};
+    for (let dept of Object.keys(notes)) {
+      let deptNotes = notes[dept]
+      for (let noteID of Object.keys(deptNotes)) {
+        extracted[noteID] = deptNotes[noteID]
+      }
+    }
+    res.json(extracted);
   });
 });
 
 /* GET notes by department. */
 router.get('/notes/:dept', function(req, res, next) {
   let deptID = req.params.dept;
-  var ref = database.ref("/note_by_dept/"+deptID);
-  ref.once('value').then(function(snapshot) {
-    var notes = snapshot.val();
+  let ref = database.ref("/note_by_dept/"+deptID);
+  ref.once("value").then(function(snapshot) {
+    let notes = snapshot.val();
     res.json(notes);
   });
-  // res.json(notesByDept[deptID]);
 });
 
 /* GET notes by subject number. */
 router.get('/notes/number/:subject', function(req, res, next) {
-  let subjectID = req.params.subject;
-  database.ref("/notes/").orderByChild("number").equalTo(subjectID).once("value").then(function(snapshot) {
+  let subjectID = req.params.subject.toUpperCase();
+  let regex = subjectID.match('(^[A-Z0-9]+)\\.[A-Z0-9]+$');
+  let deptID = regex[1];
+  let ref = database.ref("/note_by_dept/"+deptID)
+  ref.orderByChild("number").equalTo(subjectID).once("value").then(function(snapshot) {
     let notes = snapshot.val();
     res.json(notes);
   });

@@ -2,7 +2,7 @@ $(document).ready(function(){
   let notes = []
   $.getJSON("/api/notes/number/"+subjectID,function(data){
     if (data === null) {
-      console.log("No notes found")
+      $("#notes").append("<p class='no-notes'>No notes available at this time. Check again later!</p>")
       return
     }
     for (let noteID of Object.keys(data)) {
@@ -10,7 +10,7 @@ $(document).ready(function(){
     }
     for (let i = 0; i < notes.length; i++) {
       let note = notes[i]
-      addNotesToRow(note,"#notes")
+      addNoteToRow(note,"#notes")
     }
   })
 
@@ -26,16 +26,26 @@ $(document).ready(function(){
   })
 })
 
-function addNotesToRow(note,rowID) {
+function addNoteToRow(note,rowID) {
   let uploadTime = stringifyTime(note.upload_time)
+  let instructors = ""
+  for (let person of note.instructors) {
+    instructors += ", " + person
+  }
   let $wrapper = $("<div class='col-lg-3 col-md-4 col-sm-6 note-item'></div>")
   let $card = $("<div class='card h-100'></div>")
   let $cardBody = $("<div class='card-body'></div>")
   let $cardTitle = $("<h4 class='card-title'></h4>")
-  $cardTitle.append("<a href='#'>"+note.number+"</a>")
+  let $cardSubTitle = $("<h5 class='card-subtitle '>"+note.title+"</h6>")
+  $cardTitle.append("<a target='_blank' href='http://drive.google.com/uc?export=view&id=1ds6--YvGLpnFWs4VoJWt0uigMubW6Jsd'>"
+    + note.number + "</a>")
   $cardBody.append($cardTitle)
-  $cardBody.append("<p class='card-text'>"+note.title+"<br/>Taught in "+note.year+"<br/>Uploaded "+uploadTime+"<br/>By "+note.author+"</p>")
-  $card.append("<img class='card-img-top' src='http://placehold.it/600x400' alt=''>")
+  $cardBody.append($cardSubTitle)
+  $cardBody.append("<p class='card-text'>Taught in " + note.year + " " + note.term +
+    "<br/>by " + instructors.slice(2) + "</p>")
+  $cardBody.append("<p class='card-text'>Uploaded " + uploadTime +
+    "<br/>by " + note.author + "</p>")
+  // $card.append("<img class='card-img-top' src='http://placehold.it/600x400' alt=''>")
   $card.append($cardBody)
   $wrapper.append($card)
   $(rowID).append($wrapper)

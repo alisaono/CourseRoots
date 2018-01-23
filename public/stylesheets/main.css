@@ -96,6 +96,16 @@ h2 > a {
   margin-bottom: 30px;
 }
 
+.note-item h5 {
+  margin-bottom: 20px;
+}
+
 .pagination {
   margin-bottom: 30px;
+}
+
+.no-notes {
+  margin-left: 18px;
+  margin-right: 18px;
+  color: #EF4836;
 }
