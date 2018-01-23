@@ -1,15 +1,16 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 
-var index = require('./routes/index');
-// var users = require('./routes/users');
-var api = require('./routes/api'); //NEW
+const passport = require('./modules/passport');
+const index = require('./routes/index');
+const api = require('./routes/api');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,9 +24,37 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+let sessionSecret;
+if (process.env.NODE_ENV) { // Running on production server
+	let SECRETS = process.env; // Configureation is stored on process environment
+	sessionSecret = SECRETS.SESSION_SECRET;
+} else { // Running on local machine
+	var SECRETS = require('./config');
+  sessionSecret = SECRETS.SESSION.SESSION_SECRET;
+}
+
+// set up sessions
+app.use(session({
+	secret: sessionSecret,
+	resave: 'false',
+	saveUninitialized: 'true'
+}));
+
+// hook up passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', index);
-//app.use('/users', users);
-app.use('/api', api); //NEW
+app.use('/api', api);
+
+// authentication routes
+app.get('/auth/mitopenid', passport.authenticate('mitopenid'));
+
+// authentication callback routes
+app.get('/auth/mitopenid/callback', passport.authenticate('mitopenid', {
+	successRedirect: '/home',
+	failureRedirect: '/'
+}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

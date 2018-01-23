@@ -42,27 +42,46 @@ router.get('/', function(req, res, next) {
 
 /* GET main page. */
 router.get('/home', function(req, res, next) {
-  let userInfo = { name: "Meowy", id: "123456" };
-  res.render('main', { thisUser: userInfo });
+  if (!req.isAuthenticated()) {
+    res.redirect('/');
+    return;
+  }
+
+  res.render('main', { thisUser: req.user });
 });
 
 /* GET main page by department. */
 router.get('/home/:dept', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.redirect('/');
+    return;
+  }
+
   let deptID = req.params.dept;
-  res.render('course', { deptID: deptID, deptHeader: deptHeaders[deptID] });
+  res.render('course', { deptID: deptID, deptHeader: deptHeaders[deptID], thisUser: req.user });
 });
 
 /* GET search result page by subject number. */
 router.get('/search/number', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.redirect('/');
+    return;
+  }
+
   let subjectID = req.query.subject;
-  res.render('subject', { subjectID: subjectID });
+  res.render('subject', { subjectID: subjectID, thisUser: req.user });
 });
 
 /* GET note page. */
 router.get('/notes/:id', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.redirect('/');
+    return;
+  }
+
   let noteID = req.params.id;
   let noteObj = { subject: "Linear Algebra", id: noteID }
-  res.render('note', { thisNote: noteObj });
+  res.render('note', { thisNote: noteObj, thisUser: req.user });
 });
 
 module.exports = router;

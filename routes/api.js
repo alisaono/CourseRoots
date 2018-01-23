@@ -1,46 +1,21 @@
-var express = require('express');
-var firebase = require("firebase");
+const express = require('express');
+const firebase = require('firebase');
+const database = require('../modules/firebase');
 
-var router = express.Router();
-
-let fbConfig;
-if (process.env.NODE_ENV) { // Running on production server
-	var SECRETS = process.env; // Configureation is stored on process environment
-	fbConfig = {
-	  apiKey: SECRETS.FIREBASE_API_KEY,
-	  authDomain: SECRETS.FIREBASE_PRJ_ID + ".firebaseapp.com",
-	  databaseURL: "https://" + SECRETS.FIREBASE_DB_NAME + ".firebaseio.com",
-	  storageBucket: SECRETS.FIREBASE_BUCKET + ".appspot.com",
-	};
-} else { // Running on local machine
-	var SECRETS = require('../config');
-  fbConfig = {
-    apiKey: SECRETS.FIREBASE.API_KEY,
-    authDomain: SECRETS.FIREBASE.PRJ_ID + ".firebaseapp.com",
-    databaseURL: "https://" + SECRETS.FIREBASE.DB_NAME + ".firebaseio.com",
-    storageBucket: SECRETS.FIREBASE.BUCKET + ".appspot.com",
-  };
-}
-
-firebase.initializeApp(fbConfig);
-let database = firebase.database();
+const router = express.Router();
 
 /* ILLEGAL access. */
 router.get('/', function(req, res, next) {
   res.render('error',{ message : "Error 401 - Unauthorized" });
 });
 
-/* GET all notes. OLD */
-// router.get('/notes', function(req, res, next) {
-//   let ref = database.ref("/notes/");
-//   ref.once("value").then(function(snapshot) {
-//     let notes = snapshot.val();
-//     res.json(notes);
-//   });
-// });
-
 /* GET featured notes. */
 router.get('/notes/featured', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
   let ref = database.ref("/note_by_dept/")
   ref.orderByChild("upload_time").limitToLast(4).once("value").then(function(snapshot) {
     let notes = snapshot.val();
@@ -57,6 +32,11 @@ router.get('/notes/featured', function(req, res, next) {
 
 /* GET notes by department. */
 router.get('/notes/:dept', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
   let deptID = req.params.dept;
   let ref = database.ref("/note_by_dept/"+deptID);
   ref.once("value").then(function(snapshot) {
@@ -67,6 +47,11 @@ router.get('/notes/:dept', function(req, res, next) {
 
 /* GET notes by subject number. */
 router.get('/notes/number/:subject', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
   let subjectID = req.params.subject.toUpperCase();
   let regex = subjectID.match('(^[A-Z0-9]+)\\.[A-Z0-9]+$');
   let deptID = regex[1];
