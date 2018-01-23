@@ -10,7 +10,7 @@ const User = require('./models/user');
 // if your app is deployed, change the host with whatever host
 // you have. A Heroku app host will look like:
 // https://mysterious-headland-54722.herokuapp.com
-const host = 'http://localhost:3000';
+const host = 'views/main.hbs';
 
 passport.use('mitopenid', new MITStrategy({
 	clientID: ad180f1d-6dd6-4469-96b8-2391a5950531,
