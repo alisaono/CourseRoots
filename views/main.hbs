@@ -88,12 +88,14 @@
             </button>
 
             <div class="col-lg-6 col-md-4 col-sm-4 search-bar">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-default">Go!</button>
-                </span>
-              </div>
+              <form id="subject-search" name="subject_search_form" method="get" action="/search/number">
+                <div class="input-group">
+                  <input type="text" id="subject-input" class="form-control" name="subject" placeholder="Search by subject number...">
+                  <span class="input-group-btn">
+                    <button type="btn" class="btn btn-default" id="search-btn">Go!</button>
+                  </span>
+                </div>
+              </form>
             </div>
             <!-- /.search-bar -->
 
@@ -109,6 +111,26 @@
             <!-- /.form-inline -->
           </div>
           <!-- /#search-row -->
+
+          <!-- Modal -->
+          <div class="modal fade" id="input-warning" tabindex="-1" role="dialog" aria-labelledby="input-warning-label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="input-warning-label">Invalid Input</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Subject number should contain a single period between numbers and/or letters!
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- Row Heading -->
           <h2 class="my-4">Featured</h2>

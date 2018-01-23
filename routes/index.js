@@ -52,6 +52,12 @@ router.get('/home/:dept', function(req, res, next) {
   res.render('course', { deptID: deptID, deptHeader: deptHeaders[deptID] });
 });
 
+/* GET search result page by subject number. */
+router.get('/search/number', function(req, res, next) {
+  let subjectID = req.query.subject;
+  res.render('subject', { subjectID: subjectID });
+});
+
 /* GET note page. */
 router.get('/notes/:id', function(req, res, next) {
   let noteID = req.params.id;

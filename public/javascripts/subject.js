@@ -1,6 +1,6 @@
 $(document).ready(function(){
   let notes = []
-  $.getJSON("/api/notes/"+deptID,function(data){
+  $.getJSON("/api/notes/number/"+subjectID,function(data){
     if (data === null) {
       console.log("No notes found")
       return

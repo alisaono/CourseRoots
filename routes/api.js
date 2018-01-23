@@ -55,4 +55,13 @@ router.get('/notes/:dept', function(req, res, next) {
   // res.json(notesByDept[deptID]);
 });
 
+/* GET notes by subject number. */
+router.get('/notes/number/:subject', function(req, res, next) {
+  let subjectID = req.params.subject;
+  database.ref("/notes/").orderByChild("number").equalTo(subjectID).once("value").then(function(snapshot) {
+    let notes = snapshot.val();
+    res.json(notes);
+  });
+});
+
 module.exports = router;

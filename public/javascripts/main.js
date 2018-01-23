@@ -25,6 +25,17 @@ $(document).ready(function(){
       notesByDept[deptID] = deptNotes
     })
   }
+
+  $("#search-btn").on('click', function(e) {
+    e.preventDefault()
+    let input = $("#subject-input").val()
+    let regex = RegExp('^[a-z0-9]+\\.[a-z0-9]+$','i')
+    if (regex.test(input)) {
+      $("#subject-search").submit()
+    } else {
+      $('#input-warning').modal()
+    }
+  })
 })
 
 function addNotesToRow(note,rowID) {
