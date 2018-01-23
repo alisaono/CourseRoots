@@ -130,7 +130,8 @@ function addNoteToRow(note,rowID) {
   let $cardBody = $("<div class='card-body'></div>")
   let $cardTitle = $("<h4 class='card-title'></h4>")
   let $cardSubTitle = $("<h5 class='card-subtitle '>"+note.title+"</h6>")
-  $cardTitle.append("<a target='_blank' href=note.pdf_url>"
+  
+  $cardTitle.append("<a target='_blank' href=" + note.pdf_url + ">"
     + note.number + "</a>")
   $cardBody.append($cardTitle)
   $cardBody.append($cardSubTitle)
