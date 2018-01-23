@@ -6,7 +6,7 @@ var router = express.Router();
 let fbConfig;
 if (process.env.NODE_ENV) { // Running on production server
 	var SECRETS = process.env; // Configureation is stored on process environment
-	firebaseConfig = {
+	fbConfig = {
 	  apiKey: SECRETS.FIREBASE_API_KEY,
 	  authDomain: SECRETS.FIREBASE_PRJ_ID + ".firebaseapp.com",
 	  databaseURL: "https://" + SECRETS.FIREBASE_DB_NAME + ".firebaseio.com",
