@@ -9,7 +9,6 @@
     <title>CourseRoots</title>
 
     <!-- Bootstrap core CSS -->
-    <!-- <link rel="stylesheet" href="/libraries/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
     <link href="/stylesheets/main.css" rel="stylesheet">
@@ -128,32 +127,6 @@
           <!-- Row Heading -->
           <h2 class="my-4">{{ deptHeader }}</h2>
           <div id="notes" class="row"></div>
-
-          <!-- Pagination -->
-          <!-- <ul class="pagination justify-content-center">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">3</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-              </a>
-            </li>
-          </ul> -->
-
         </div>
         <!-- /.container -->
 
@@ -173,16 +146,11 @@
     <!-- Bootstrap core JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="libraries/bootstrap.bundle.min.js"></script> -->
 
     <script>
-      $("#sidebar-toggle").on('click', function() {
-        $("#wrapper").toggleClass("toggled");
-      });
+      const deptID = "{{ deptID }}";
     </script>
-    <script>
-      var deptID = "{{ deptID }}";
-    </script>
+    <script src="/javascripts/helper.js"></script>
     <script src="/javascripts/course.js"></script>
   </body>
 </html>
