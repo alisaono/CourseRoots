@@ -13,11 +13,14 @@ $("#search-btn").on('click', function(e) {
   }
 })
 
-function updateNotes(notes) {
+function updateNotes(notes,notesHidden) {
   $("#notes").empty()
   for (let i = 0; i < notes.length; i++) {
     let note = notes[i]
     addNoteToRow(note,"#notes")
+    if (notesHidden.has(note.id)) {
+      $("#"+note.id).hide()
+    }
   }
 }
 
@@ -27,7 +30,7 @@ function addNoteToRow(note,rowID) {
   for (let person of note.instructors) {
     instructors += ", " + person
   }
-  let $wrapper = $("<div class='col-lg-3 col-md-4 col-sm-6 note-item'></div>")
+  let $wrapper = $("<div id='" + note.id + "' class='col-lg-3 col-md-4 col-sm-6 note-item'></div>")
   let $card = $("<div class='card h-100'></div>")
   let $cardBody = $("<div class='card-body'></div>")
   let $cardTitle = $("<h4 class='card-title'></h4>")

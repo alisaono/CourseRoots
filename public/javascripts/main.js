@@ -8,7 +8,9 @@ $(document).ready(function(){
   $.getJSON("/api/notes/featured",function(data){
     let featuredNotes = []
     for (let noteID of Object.keys(data)) {
-      featuredNotes.push(data[noteID])
+      let noteObj = data[noteID]
+      noteObj.id = noteID
+      featuredNotes.push(noteObj)
     }
     for (let i = 0; i < featuredNotes.length; i++) {
       let note = featuredNotes[i]

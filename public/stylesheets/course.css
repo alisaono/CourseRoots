@@ -1,12 +1,22 @@
 .sidebar-nav {
-  padding: 20px;
+  padding: 20px 20px 74px 20px;
 }
 
 .sidebar-nav label {
   color: #ffffff;
 }
 
+.checkbox-more {
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
 .short-text {
   display: inline-block;
   width: 48%;
+}
+
+.no-notes {
+  display: none;
 }
