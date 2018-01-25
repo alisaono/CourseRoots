@@ -42,27 +42,23 @@
       <div id="sidebar-wrapper">
         <div class="sidebar-nav">
           <div class="form-group">
-            <label for="year_min" class="control-label">Year:</label><br/>
-            <input id="year_min" type="text" class="form-control short-text" placeholder="From">
-            <input id="year_max" type="text" class="form-control short-text" placeholder="To">
+            <label for="year-min" class="control-label">Year:</label><br/>
+            <input id="year-min" type="text" class="form-control short-text" placeholder="From">
+            <input id="year-max" type="text" class="form-control short-text" placeholder="To">
           </div>
           <div class="form-group">
             <label for="term" class="control-label">Term:</label>
             <select id="term" class="form-control" name="term">
-                <option value="upload_time">Any</option>
-                <option value="upload_time">Fall</option>
-                <option value="upload_time">IAP</option>
-                <option value="upload_time">Spring</option>
+                <option value="Any">Any</option>
+                <option value="Fall">Fall</option>
+                <option value="IAP">IAP</option>
+                <option value="Spring">Spring</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="taught_by" class="control-label">Taught by:</label>
-            <input id="taught_by" type="text" class="form-control" placeholder="Instructor">
-          </div>
-          <div class="form-group">
-            <label for="upload_by" class="control-label">Uploaded by:</label>
-            <input id="upload_by" type="text" class="form-control" placeholder="User">
-          </div>
+          <label for="taught-by" class="control-label">Taught by:</label>
+          <div id="taught-by" class="form-group"></div>
+          <label for="upload-by" class="control-label">Uploaded by:</label>
+          <div id="upload-by" class="form-group"></div>
           <button type="button" id="apply-filter" class="btn btn-secondary" data-toggle="button" aria-pressed="false" autocomplete="off">
             Apply
           </button>
@@ -97,7 +93,6 @@
                   <option value="upload_time">Upload Time</option>
                   <option value="popularity">Popularity</option>
                   <option value="year">Year</option>
-                  <option value="number">Subject Number</option>
               </select>
             </div>
             <!-- /.form-inline -->

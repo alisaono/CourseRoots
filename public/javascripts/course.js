@@ -12,6 +12,7 @@ $(document).ready(function(){
   let numUsers = 0
 
   let notesHidden = new Set()
+  let notesIDs = []
 
   $.getJSON("/api/notes/"+deptID,function(data){
     if (data === null) {
@@ -23,6 +24,7 @@ $(document).ready(function(){
       let noteObj = data[noteID]
       noteObj.id = noteID
       notesByTime.push(noteObj)
+      notesIDs.push(noteID)
 
       for (let instructor of noteObj.instructors) {
         if (instructor in notesTaughtBy) {
@@ -124,9 +126,16 @@ $(document).ready(function(){
       return
     }
 
-    notesHidden.clear()
     $(".no-notes").hide()
-    $(".note-item").show()
+    $(".note-item").hide()
+    notesHidden = new Set(notesIDs)
+
+    $("#taught-by input:checkbox:checked").each(function() {
+      for (let noteID of notesTaughtBy[$(this).val()]) {
+        $("#"+noteID).show()
+        notesHidden.delete(noteID)
+      }
+    })
 
     if ($("#year-min").val() !== "" && $("#year-max").val() !== "") {
       for (let note of notesByTime) {
@@ -169,13 +178,6 @@ $(document).ready(function(){
       }
     }
 
-    $("#taught-by input:checkbox:not(:checked)").each(function() {
-      for (let noteID of notesTaughtBy[$(this).val()]) {
-        $("#"+noteID).hide()
-        notesHidden.add(noteID)
-      }
-    })
-
     $("#upload-by input:checkbox:not(:checked)").each(function() {
       for (let noteID of notesUploadBy[$(this).val()]) {
         $("#"+noteID).hide()
@@ -188,33 +190,3 @@ $(document).ready(function(){
     }
   })
 })
-
-function addCheckbox(value,group,hidden) {
-  let $checkItem = $("<div class='form-check'></div>")
-  let $checkbox = $("<input class='form-check-input' type='checkbox' value='" + value
-    + "' id='" + value + "' checked='checked'>")
-  let $checkLabel = $("<label class='form-check-label' for='" + value + "'>"
-    + value + "</label>")
-
-  $checkItem.append($checkbox)
-  $checkItem.append($checkLabel)
-  $("#"+group).append($checkItem)
-
-  if (hidden) {
-    $checkItem.addClass("check-toggle")
-    $checkItem.hide()
-  }
-}
-
-function addCheckboxToggle(group) {
-  let $toggleBtn = $("<span class='checkbox-more'>See more</span>")
-  $("#"+group).append($toggleBtn)
-  $toggleBtn.on('click', function() {
-    if ($toggleBtn.text() === "See more") {
-      $toggleBtn.text("Hide")
-    } else {
-      $toggleBtn.text("See more")
-    }
-    $("#"+group+" .check-toggle").toggle()
-  })
-}

@@ -61,3 +61,33 @@ function stringifyTime(timestamp) {
   }
   return uploadString
 }
+
+function addCheckbox(value,group,hidden) {
+  let $checkItem = $("<div class='form-check'></div>")
+  let $checkbox = $("<input class='form-check-input' type='checkbox' value='" + value
+    + "' id='" + value + "' checked='checked'>")
+  let $checkLabel = $("<label class='form-check-label' for='" + value + "'>"
+    + value + "</label>")
+
+  $checkItem.append($checkbox)
+  $checkItem.append($checkLabel)
+  $("#"+group).append($checkItem)
+
+  if (hidden) {
+    $checkItem.addClass("check-toggle")
+    $checkItem.hide()
+  }
+}
+
+function addCheckboxToggle(group) {
+  let $toggleBtn = $("<span class='checkbox-more'>See more</span>")
+  $("#"+group).append($toggleBtn)
+  $toggleBtn.on('click', function() {
+    if ($toggleBtn.text() === "See more") {
+      $toggleBtn.text("Hide")
+    } else {
+      $toggleBtn.text("See more")
+    }
+    $("#"+group+" .check-toggle").toggle()
+  })
+}
