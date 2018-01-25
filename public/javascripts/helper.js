@@ -9,6 +9,7 @@ $("#search-btn").on('click', function(e) {
   if (regex.test(input)) {
     $("#subject-search").submit()
   } else {
+    $('#input-warning .modal-body').text("Subject number should contain a single period between numbers and/or letters!")
     $('#input-warning').modal()
   }
 })

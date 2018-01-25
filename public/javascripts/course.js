@@ -106,18 +106,21 @@ $(document).ready(function(){
   $("#apply-filter").on('click', function() {
     let yearRegex = RegExp('^[0-9]{4}$')
     if ($("#year-min").val() !== "" && !yearRegex.test($("#year-min").val())) {
-      alert("invalid min!")
+      $('#input-warning .modal-body').text("Year should be a 4-digit number!")
+      $('#input-warning').modal()
       return
     }
     if ($("#year-max").val() !== "" && !yearRegex.test($("#year-max").val())) {
-      alert("invalid max!")
+      $('#input-warning .modal-body').text("Year should be a 4-digit number!")
+      $('#input-warning').modal()
       return
     }
 
     let yearMin = parseInt($("#year-min").val())
     let yearMax = parseInt($("#year-max").val())
     if (yearMin > yearMax) {
-      alert("invalid min > max!")
+      $('#input-warning .modal-body').text("Start year should be the same or before the end year!")
+      $('#input-warning').modal()
       return
     }
 
