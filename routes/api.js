@@ -75,6 +75,8 @@ router.get('/users/:id', function(req, res, next) {
 
   ref.once("value").then(function(snapshot) {
     let data = snapshot.val();
+    result['name'] = data.first_name + " " + data.last_name;
+    result['kerbero'] = data.kerbero;
     result['major'] = data.major ? data.major : "";
     result['year'] = data.year ? data.year : "";
     result['introduction'] = data.introduction ? data.introduction : "";

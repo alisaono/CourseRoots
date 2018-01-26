@@ -25,10 +25,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/me">{{thisUser.first_name}}
-                <span class="sr-only">(current)</span>
-              </a>
+            <li class="nav-item">
+              <a class="nav-link" href="/me">{{thisUser.first_name}}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/home">Home</a>
@@ -40,61 +38,17 @@
 
     <!-- Page Content -->
     <div class="container">
-
-      <!-- Profile edit modal -->
-      <div class="modal fade" id="prof-modal" tabindex="-1" role="dialog" aria-labelledby="prof-modal-label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="prof-modal-label">Update Your <span></span></h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <input type="text" id="new-prof-input" class="form-control" name="new_prof">
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-primary">Save Changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Note upload modal -->
-      <div class="modal fade" id="upload-modal" tabindex="-1" role="dialog" aria-labelledby="upload-modal-label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="upload-modal-label">Upload Your Note</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body"></div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-primary">Upload</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div id="prof-row" class="row">
         <div class="col-lg-3 col-md-3 col-sm-3">
           <img id="prof-img" src="/images/sprout.png">
         </div>
         <div id="prof-info" class="col-lg-9 col-md-9 col-sm-9 container">
-          <h1>{{ thisUser.first_name }} {{ thisUser.last_name }}
-            <small>({{ thisUser.kerbero }})</small>
-          </h1>
         </div>
       </div>
       <!-- /#profile-row -->
 
       <div class="row notes-header">
-        <h2 class="my-4">Your Favorites</h2>
+        <h2 class="my-4">Favorites</h2>
         <div class="form-inline">
           <label for="favorites-sort" class="control-label">Sort by:</label>
           <select id="favorites-sort" class="form-control" name="sort">
@@ -108,11 +62,11 @@
       <!-- /.notes-header -->
       <div id="favorites" class="row"></div>
       <div class="row">
-        <p class='no-notes'>Nothing to show yet...</p>
+        <p id="no-favs" class='no-notes'>Nothing to show yet...</p>
       </div>
 
       <div class="row notes-header">
-        <h2 class="my-4">Your Uploads</h2>
+        <h2 class="my-4">Uploads</h2>
         <div class="form-inline">
           <label for="uploads-sort" class="control-label">Sort by:</label>
           <select id="uploads-sort" class="form-control" name="sort">
@@ -125,6 +79,9 @@
       </div>
       <!-- /.notes-header -->
       <div id="uploads" class="row"></div>
+      <div class="row">
+        <p id="no-uploads" class='no-notes'>Nothing to show yet...</p>
+      </div>
     </div>
     <!-- /.container -->
 
@@ -141,9 +98,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      const userID = "{{ thisUser.mit_id }}";
+      const userID = "{{ userID }}";
     </script>
     <script src="/javascripts/helper.js"></script>
-    <script src="/javascripts/me.js"></script>
+    <script src="/javascripts/user.js"></script>
   </body>
 </html>

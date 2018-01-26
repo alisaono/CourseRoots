@@ -7,10 +7,13 @@
   margin-bottom: 10px;
 }
 
+#prof-row h1 > small {
+  margin-left: 10px;
+}
+
 #prof-row .input-group {
   margin-bottom: 15px;
 }
-
 
 #prof-row p {
   margin-left: 8px;

@@ -85,20 +85,20 @@ router.get('/notes/:id', function(req, res, next) {
 });
 
 /* GET user page. */
-// router.get('/users/:id', function(req, res, next) {
-//   if (!req.isAuthenticated()) {
-//     res.redirect('/');
-//     return;
-//   }
-//
-//   let userID = req.params.id;
-//   if (req.user.mit_id === userID) {
-//     res.redirect('/me');
-//     return;
-//   }
-//
-//   res.render('user', { userID: userID, thisUser: req.user });
-// });
+router.get('/users/:id', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.redirect('/');
+    return;
+  }
+
+  let userID = req.params.id;
+  if (req.user.mit_id === userID) {
+    res.redirect('/me');
+    return;
+  }
+
+  res.render('user', { userID: userID, thisUser: req.user });
+});
 
 /* GET your own user page. */
 router.get('/me', function(req, res, next) {

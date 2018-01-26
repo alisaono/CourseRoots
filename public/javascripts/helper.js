@@ -43,7 +43,7 @@ function addNoteToRow(note,rowID) {
   $cardBody.append("<p class='card-text'>Taught in " + note.year + " " + note.term +
     "<br/>by " + instructors.slice(2) + "</p>")
   $cardBody.append("<p class='card-text'>Uploaded " + uploadTime +
-    "<br/>by " + note.author + "</p>")
+    "<br/>by <a href='/users/" + note.authorID + "'>" + note.author + "</a></p>")
   $card.append($cardBody)
   $wrapper.append($card)
   $(rowID).append($wrapper)
