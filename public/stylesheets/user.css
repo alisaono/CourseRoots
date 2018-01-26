@@ -1,0 +1,39 @@
+#prof-row {
+  padding-top: 30px;
+}
+
+#prof-img {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#prof-row .input-group {
+  margin-bottom: 15px;
+}
+
+
+#prof-row p {
+  margin-left: 8px;
+}
+
+#prof-row .edit-icon {
+  height: 22px;
+  cursor: pointer;
+}
+
+.notes-header > .form-inline {
+  margin-left: 20px;
+}
+
+.no-notes {
+  display: none;
+}
+
+#upload-card .card {
+  color: #007bff;
+  cursor: pointer;
+}
+
+#upload-card .card:hover {
+  background-color: rgba(0,0,0,.125);
+}

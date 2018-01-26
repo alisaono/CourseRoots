@@ -84,4 +84,30 @@ router.get('/notes/:id', function(req, res, next) {
   res.render('note', { thisNote: noteObj, thisUser: req.user });
 });
 
+/* GET user page. */
+// router.get('/users/:id', function(req, res, next) {
+//   if (!req.isAuthenticated()) {
+//     res.redirect('/');
+//     return;
+//   }
+//
+//   let userID = req.params.id;
+//   if (req.user.mit_id === userID) {
+//     res.redirect('/me');
+//     return;
+//   }
+//
+//   res.render('user', { userID: userID, thisUser: req.user });
+// });
+
+/* GET your own user page. */
+router.get('/me', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.redirect('/');
+    return;
+  }
+
+  res.render('me', { thisUser: req.user });
+});
+
 module.exports = router;

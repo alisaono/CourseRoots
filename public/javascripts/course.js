@@ -57,14 +57,14 @@ $(document).ready(function(){
       if (a.upload_time > b.upload_time) return -1
       return 0
     })
-    updateNotes(notesByTime,notesHidden)
+    updateNotes("#notes",notesByTime,notesHidden)
   })
 
   $("#sort").change(function() {
     let sortOption = $(this).val()
     switch(sortOption) {
       case "upload_time":
-        updateNotes(notesByTime,notesHidden)
+        updateNotes("#notes",notesByTime,notesHidden)
         break
       case "popularity":
         if (notesByPopularity.length !== notesByTime.length) {
@@ -74,7 +74,7 @@ $(document).ready(function(){
             return 0
           })
         }
-        updateNotes(notesByPopularity,notesHidden)
+        updateNotes("#notes",notesByPopularity,notesHidden)
         break
       case "year":
         if (notesByYear.length !== notesByTime.length) {
@@ -88,7 +88,7 @@ $(document).ready(function(){
             return 0
           })
         }
-        updateNotes(notesByYear,notesHidden)
+        updateNotes("#notes",notesByYear,notesHidden)
         break
       case "number":
         if (notesByNumber.length !== notesByTime.length) {
@@ -98,7 +98,7 @@ $(document).ready(function(){
             return 0
           })
         }
-        updateNotes(notesByNumber,notesHidden)
+        updateNotes("#notes",notesByNumber,notesHidden)
         break
       default:
         return

@@ -62,4 +62,56 @@ router.get('/notes/number/:subject', function(req, res, next) {
   });
 });
 
+/* GET user info by userID. */
+router.get('/users/:id', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
+  let userID = req.params.id;
+  let result = {};
+  let ref = database.ref("/users/" + userID);
+
+  ref.once("value").then(function(snapshot) {
+    let data = snapshot.val();
+    result['major'] = data.major ? data.major : "";
+    result['year'] = data.year ? data.year : "";
+    result['introduction'] = data.introduction ? data.introduction : "";
+
+    result['favorites'] = null;
+    result['uploads'] = null;
+    res.json(result);
+  });
+});
+
+/* POST profile updates */
+router.post('/me/update', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
+  let userID = req.user.mit_id;
+  let newValues = {};
+
+  if (req.body.major) {
+		newValues['major'] = req.body.major;
+	}
+  if (req.body.year) {
+    newValues['year'] = req.body.year;
+  }
+  if (req.body.introduction) {
+    newValues['introduction'] = req.body.introduction;
+  }
+
+  database.ref("/users/" + userID).update(newValues, function(error) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.send("");
+    }
+  })
+})
+
 module.exports = router;

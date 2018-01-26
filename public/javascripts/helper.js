@@ -14,12 +14,12 @@ $("#search-btn").on('click', function(e) {
   }
 })
 
-function updateNotes(notes,notesHidden) {
-  $("#notes").empty()
+function updateNotes(rowID,notes,notesHidden) {
+  $(rowID).empty()
   for (let i = 0; i < notes.length; i++) {
     let note = notes[i]
-    addNoteToRow(note,"#notes")
-    if (notesHidden.has(note.id)) {
+    addNoteToRow(note,rowID)
+    if (notesHidden !== null && notesHidden.has(note.id)) {
       $("#"+note.id).hide()
     }
   }
