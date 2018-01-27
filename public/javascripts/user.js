@@ -16,13 +16,13 @@ $(document).ready(function(){
     $("#prof-info").append($header)
 
     // Populate the major field.
-    let major = (data.major === "") ? "Unknown" : data.major
+    let major = (data.major === "") ? "Unknown" : sanitize(data.major)
     let $majorRow = $("<div class='row'></div>")
     $majorRow.append("<p><b>Major: </b><span>" + major + "</span></p>")
     $("#prof-info").append($majorRow)
 
     // Populate the year field.
-    let year = (data.year === "") ? "Unknown" : data.year
+    let year = (data.year === "") ? "Unknown" : sanitize(data.year)
     let $yearRow = $("<div class='row'></div>")
     $yearRow.append("<p><b>Year: </b><span>" + year + "</span></p>")
     $("#prof-info").append($yearRow)
@@ -30,7 +30,7 @@ $(document).ready(function(){
     // Populate the intro field.
     if (data.introduction !== "") {
       let $introRow = $("<div class='row'></div>")
-      $introRow.append("<p><b>Year: </b><span>" + data.introduction + "</span></p>")
+      $introRow.append("<p><b>Year: </b><span>" + sanitize(data.introduction) + "</span></p>")
       $("#prof-info").append($introRow)
     }
 

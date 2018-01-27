@@ -35,7 +35,7 @@ function addNoteToRow(note,rowID,thisUserID) {
   let $card = $("<div class='card h-100'></div>")
   let $cardBody = $("<div class='card-body'></div>")
   let $cardTitle = $("<h4 class='card-title'></h4>")
-  let $cardSubTitle = $("<h5 class='card-subtitle '>"+note.title+"</h6>")
+  let $cardSubTitle = $("<h5 class='card-subtitle '>" + sanitize(note.title) + "</h6>")
 
   let $favCount = $("<span class='fav-count'>" + note.popularity + "</span>")
   let $favIcon = $("<img class='fav-icon'>")
@@ -88,7 +88,7 @@ function addNoteToRow(note,rowID,thisUserID) {
   $cardBody.append($cardTitle)
   $cardBody.append($cardSubTitle)
   $cardBody.append("<p class='card-text'>Taught in " + note.year + " " + note.term +
-    "<br/>by " + instructors.slice(2) + "</p>")
+    "<br/>by " + sanitize(instructors.slice(2)) + "</p>")
   $cardBody.append("<p class='card-text'>Uploaded " + uploadTime +
     "<br/>by <a href='/users/" + note.authorID + "'>" + note.author + "</a></p>")
   $card.append($cardBody)
@@ -137,4 +137,8 @@ function addCheckboxToggle(group) {
     }
     $("#"+group+" .check-toggle").toggle()
   })
+}
+
+function sanitize(string) {
+  return string.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
