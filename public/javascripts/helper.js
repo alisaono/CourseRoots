@@ -14,18 +14,18 @@ $("#search-btn").on('click', function(e) {
   }
 })
 
-function updateNotes(rowID,notes,notesHidden) {
+function updateNotes(rowID,notes,notesHidden,thisUserID) {
   $(rowID).empty()
   for (let i = 0; i < notes.length; i++) {
     let note = notes[i]
-    addNoteToRow(note,rowID)
+    addNoteToRow(note,rowID,thisUserID)
     if (notesHidden !== null && notesHidden.has(note.id)) {
       $("#"+note.id).hide()
     }
   }
 }
 
-function addNoteToRow(note,rowID) {
+function addNoteToRow(note,rowID,thisUserID) {
   let uploadTime = stringifyTime(note.upload_time)
   let instructors = ""
   for (let person of note.instructors) {
@@ -36,8 +36,55 @@ function addNoteToRow(note,rowID) {
   let $cardBody = $("<div class='card-body'></div>")
   let $cardTitle = $("<h4 class='card-title'></h4>")
   let $cardSubTitle = $("<h5 class='card-subtitle '>"+note.title+"</h6>")
+
+  let $favCount = $("<span class='fav-count'>" + note.popularity + "</span>")
+  let $favIcon = $("<img class='fav-icon'>")
+  if (note.usersLiked && thisUserID in note.usersLiked) {
+    $favIcon.attr('src',"/images/heart-dark.png")
+    $favIcon.addClass('liked')
+  } else {
+    $favIcon.attr('src',"/images/heart-light.png")
+  }
+  $favIcon.on('click', function() {
+    if ($favIcon.hasClass('liked')) {
+      let currCount = parseInt($favCount.text())
+      let newCount = currCount - 1
+      $.ajax({
+        url: '/api/me/unlike',
+        method: 'POST',
+        data: note,
+      }).done(function(response){
+        if (response === "") {
+          $favCount.text(newCount.toString())
+          $favIcon.attr('src',"/images/heart-light.png")
+          $favIcon.removeClass('liked')
+        } else {
+          alert("Error occurred :( Try again...")
+        }
+      })
+    } else {
+      let currCount = parseInt($favCount.text())
+      let newCount = currCount + 1
+      $.ajax({
+        url: '/api/me/like',
+        method: 'POST',
+        data: note,
+      }).done(function(response){
+        if (response === "") {
+          $favCount.text(newCount.toString())
+          $favIcon.attr('src',"/images/heart-dark.png")
+          $favIcon.addClass('liked')
+        } else {
+          alert("Error occurred :( Try again...")
+        }
+      })
+    }
+  })
+
   $cardTitle.append("<a target='_blank' href=" + note.pdf_url + ">"
     + note.number + "</a>")
+  $cardTitle.append($favIcon)
+  $cardTitle.append($favCount)
   $cardBody.append($cardTitle)
   $cardBody.append($cardSubTitle)
   $cardBody.append("<p class='card-text'>Taught in " + note.year + " " + note.term +

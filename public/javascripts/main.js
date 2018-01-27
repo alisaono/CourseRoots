@@ -14,7 +14,7 @@ $(document).ready(function(){
     }
     for (let i = 0; i < featuredNotes.length; i++) {
       let note = featuredNotes[i]
-      addNoteToRow(note,"#notes-featured")
+      addNoteToRow(note,"#notes-featured",thisUserID)
     }
   })
 
@@ -52,11 +52,13 @@ function addDeptRows(start,end) {
         $("#notes-"+deptID).append("<p class='no-notes'>No notes available at this time. Check again later!</p>")
       } else {
         for (let noteID of Object.keys(data)) {
-          deptNotes.push(data[noteID])
+          let noteObj = data[noteID]
+          noteObj.id = noteID
+          deptNotes.push(noteObj)
         }
         for (let i = 0; i < Math.min(4,deptNotes.length); i++) {
           let note = deptNotes[i]
-          addNoteToRow(note,"#notes-"+deptID)
+          addNoteToRow(note,"#notes-"+deptID,thisUserID)
         }
         $("#header-"+deptID).append("<a href='/home/"+deptID+"'>See more</a>")
       }

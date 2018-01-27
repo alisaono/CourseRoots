@@ -71,19 +71,49 @@ router.get('/users/:id', function(req, res, next) {
 
   let userID = req.params.id;
   let result = {};
-  let ref = database.ref("/users/" + userID);
 
-  ref.once("value").then(function(snapshot) {
-    let data = snapshot.val();
+  database.ref("/users/"+userID).once("value").then(function(userSnap) {
+    let data = userSnap.val();
     result['name'] = data.first_name + " " + data.last_name;
     result['kerbero'] = data.kerbero;
     result['major'] = data.major ? data.major : "";
     result['year'] = data.year ? data.year : "";
     result['introduction'] = data.introduction ? data.introduction : "";
 
-    result['favorites'] = null;
-    result['uploads'] = null;
-    res.json(result);
+    if (data.favorites || data.uploads) {
+      database.ref("/note_by_dept/").once("value").then(function(notesSnap) {
+        let notes = notesSnap.val();
+
+        if (data.favorites) {
+          let favorites = {};
+          for (let noteID of Object.keys(data.favorites)) {
+            let dept = data.favorites[noteID]['dept']
+            favorites[noteID] = notes[dept][noteID]
+          }
+          result['favorites'] = favorites;
+        } else {
+          result['favorites'] = null;
+        }
+
+        if (data.uploads) {
+          let uploads = {};
+          for (let noteID of Object.keys(data.uploads)) {
+            let dept = data.uploads[noteID]['dept']
+            uploads[noteID] = notes[dept][noteID]
+          }
+          result['uploads'] = uploads;
+        } else {
+          result['uploads'] = null;
+        }
+
+        res.json(result);
+      });
+
+    } else {
+      result['favorites'] = null;
+      result['uploads'] = null;
+      res.json(result);
+    }
   });
 });
 
@@ -108,12 +138,74 @@ router.post('/me/update', function(req, res, next) {
   }
 
   database.ref("/users/" + userID).update(newValues, function(error) {
+    let message = error ? error : "";
+    res.send(message);
+  })
+})
+
+/* POST add user favorite */
+router.post('/me/like', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
+  let deptID = req.body.dept;
+  let noteID = req.body.id;
+  let userID = req.user.mit_id;
+
+  let updates = {};
+  updates['/users/'+userID+'/favorites/'+noteID] = { dept: deptID };
+
+  let newLike = {};
+  newLike[userID] = true;
+  updates['/note_by_dept/'+deptID+'/'+noteID+'/usersLiked'] = newLike;
+
+  database.ref().update(updates, function(error) {
     if (error) {
       res.send(error);
-    } else {
-      res.send("");
+      return;
     }
-  })
+
+    let ref = database.ref('/note_by_dept/'+deptID+'/'+noteID+'/popularity');
+    ref.transaction(function(currCount) {
+      return currCount + 1;
+    }, function(error, committed, snapshot) {
+      let message = error ? error : "";
+      res.send(message);
+    });
+  });
+})
+
+/* POST remove user favorite */
+router.post('/me/unlike', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
+  let deptID = req.body.dept;
+  let noteID = req.body.id;
+  let userID = req.user.mit_id;
+
+  let updates = {};
+  updates['/users/'+userID+'/favorites/'+noteID] = null;
+  updates['/note_by_dept/'+deptID+'/'+noteID+'/usersLiked/'+userID] = null;
+
+  database.ref().update(updates, function(error) {
+    if (error) {
+      res.send(error);
+      return;
+    }
+
+    let ref = database.ref('/note_by_dept/'+deptID+'/'+noteID+'/popularity');
+    ref.transaction(function(currCount) {
+      return currCount - 1;
+    }, function(error, committed, snapshot) {
+      let message = error ? error : "";
+      res.send(message);
+    });
+  });
 })
 
 module.exports = router;

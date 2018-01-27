@@ -9,7 +9,7 @@ $(document).ready(function(){
   let uploadsByYear = []
   let uploadsByNumber = []
 
-  $.getJSON("/api/users/"+userID,function(data){
+  $.getJSON("/api/users/"+thisUserID,function(data){
     // Populate the major field.
     addProfField("major","What's your major?",75,"<b>Your Major: </b>")
     if (data.major === "") {
@@ -52,7 +52,7 @@ $(document).ready(function(){
         if (a.upload_time > b.upload_time) return -1
         return 0
       })
-      updateNotes("#favorites",favoritesByTime,null)
+      updateNotes("#favorites",favoritesByTime,null,thisUserID)
     }
 
     // Populate uploaded notes.
@@ -68,7 +68,7 @@ $(document).ready(function(){
         if (a.upload_time > b.upload_time) return -1
         return 0
       })
-      updateNotes("#uploads",uploadsByTime,null)
+      updateNotes("#uploads",uploadsByTime,null,thisUserID)
     }
     addUploadCard()
   })
@@ -77,7 +77,7 @@ $(document).ready(function(){
     let sortOption = $(this).val()
     switch(sortOption) {
       case "upload_time":
-        updateNotes("#favorites",favoritesByTime,null)
+        updateNotes("#favorites",favoritesByTime,null,thisUserID)
         break
       case "popularity":
         if (favoritesByPopularity.length !== favoritesByTime.length) {
@@ -87,7 +87,7 @@ $(document).ready(function(){
             return 0
           })
         }
-        updateNotes("#favorites",favoritesByPopularity,null)
+        updateNotes("#favorites",favoritesByPopularity,null,thisUserID)
         break
       case "year":
         if (favoritesByYear.length !== favoritesByTime.length) {
@@ -101,7 +101,7 @@ $(document).ready(function(){
             return 0
           })
         }
-        updateNotes("#favorites",favoritesByYear,null)
+        updateNotes("#favorites",favoritesByYear,null,thisUserID)
         break
       case "number":
         if (favoritesByNumber.length !== favoritesByTime.length) {
@@ -111,7 +111,7 @@ $(document).ready(function(){
             return 0
           })
         }
-        updateNotes("#favorites",favoritesByNumber,null)
+        updateNotes("#favorites",favoritesByNumber,null,thisUserID)
         break
       default:
         return
@@ -122,7 +122,7 @@ $(document).ready(function(){
     let sortOption = $(this).val()
     switch(sortOption) {
       case "upload_time":
-        updateNotes("#uploads",uploadsByTime,null)
+        updateNotes("#uploads",uploadsByTime,null,thisUserID)
         addUploadCard()
         break
       case "popularity":
@@ -133,7 +133,7 @@ $(document).ready(function(){
             return 0
           })
         }
-        updateNotes("#uploads",uploadsByPopularity,null)
+        updateNotes("#uploads",uploadsByPopularity,null,thisUserID)
         addUploadCard()
         break
       case "year":
@@ -148,7 +148,7 @@ $(document).ready(function(){
             return 0
           })
         }
-        updateNotes("#uploads",uploadsByYear,null)
+        updateNotes("#uploads",uploadsByYear,null,thisUserID)
         addUploadCard()
         break
       case "number":
@@ -159,7 +159,7 @@ $(document).ready(function(){
             return 0
           })
         }
-        updateNotes("#uploads",uploadsByNumber,null)
+        updateNotes("#uploads",uploadsByNumber,null,thisUserID)
         addUploadCard()
         break
       default:

@@ -100,8 +100,17 @@ h2 > a {
   margin-bottom: 20px;
 }
 
-.pagination {
-  margin-bottom: 30px;
+.fav-count {
+  float: right;
+  margin-right: 5px;
+  color: #545b62;
+  font-size: 0.65em;
+}
+
+.fav-icon {
+  height: 26px;
+  float: right;
+  cursor: pointer;
 }
 
 .no-notes {
