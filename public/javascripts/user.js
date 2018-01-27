@@ -104,9 +104,7 @@ $(document).ready(function(){
       case "number":
         if (favoritesByNumber.length !== favoritesByTime.length) {
           favoritesByNumber = favoritesByTime.slice().sort(function compare(a,b) {
-            if (a.number > b.number) return 1
-            if (a.number < b.number) return -1
-            return 0
+            return compareSubjects(a,b)
           })
         }
         updateNotes("#favorites",favoritesByNumber,null,thisUserID)
@@ -149,9 +147,7 @@ $(document).ready(function(){
       case "number":
         if (uploadsByNumber.length !== uploadsByTime.length) {
           uploadsByNumber = uploadsByTime.slice().sort(function compare(a,b) {
-            if (a.number > b.number) return 1
-            if (a.number < b.number) return -1
-            return 0
+            return compareSubjects(a,b)
           })
         }
         updateNotes("#uploads",uploadsByNumber,null,thisUserID)

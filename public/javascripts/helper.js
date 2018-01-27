@@ -142,3 +142,30 @@ function addCheckboxToggle(group) {
 function sanitize(string) {
   return string.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
+
+function compareSubjects(a,b) {
+  let regexA = a.number.toUpperCase().match('(^[A-Z0-9]+)\\.([A-Z0-9]+)$')
+  let regexB = b.number.toUpperCase().match('(^[A-Z0-9]+)\\.([A-Z0-9]+)$')
+  let intA = parseInt(regexA[0])
+  let intB = parseInt(regexB[0])
+  if (!isNaN(intA) && !isNaN(intB)) {
+    if (intA > intB) return 1
+    if (intA < intB) return -1
+    if (regexA[0] > regexB[0]) return 1
+    if (regexA[0] < regexB[0]) return -1
+    if (regexA[1] > regexB[1]) return 1
+    if (regexA[1] < regexB[1]) return -1
+    return 0
+  }
+  if (!isNaN(intA)) {
+    return -1 // a < b
+  }
+  if (!isNaN(intB)) {
+    return 1 // a > b
+  }
+  if (regexA[0] > regexB[0]) return 1
+  if (regexA[0] < regexB[0]) return -1
+  if (regexA[1] > regexB[1]) return 1
+  if (regexA[1] < regexB[1]) return -1
+  return 0
+}

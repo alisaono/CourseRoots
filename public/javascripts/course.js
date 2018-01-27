@@ -93,9 +93,7 @@ $(document).ready(function(){
       case "number":
         if (notesByNumber.length !== notesByTime.length) {
           notesByNumber = notesByTime.slice().sort(function compare(a,b) {
-            if (a.number > b.number) return 1
-            if (a.number < b.number) return -1
-            return 0
+            return compareSubjects(a,b)
           })
         }
         updateNotes("#notes",notesByNumber,notesHidden,thisUserID)
