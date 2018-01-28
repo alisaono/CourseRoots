@@ -84,7 +84,7 @@ function addNoteToRow(note,rowID,thisUserID) {
     }
   })
 
-  $cardTitle.append("<a target='_blank' href=" + note.pdf_url + ">"
+  $cardTitle.append("<a target='_blank' href=/notes/" + note.dept + "/" + note.id + "/" + note.pdfID + ">"
     + note.number + "</a>")
   $cardTitle.append($favIcon)
   $cardTitle.append($favCount)

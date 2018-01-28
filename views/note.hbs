@@ -1,10 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     <title>CourseRoots</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+	<style>
+		/* The switch - the box around the slider */
+		.switch {
+		  position: relative;
+		  display: block;
+		  width: 30px;
+		  height: 17px;
+		}
+
+		/* Hide default HTML checkbox */
+		.switch input {display:none;}
+
+		/* The slider */
+		.slider {
+		  position: absolute;
+		  cursor: pointer;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  background-color: #ccc;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+
+		.slider:before {
+		  position: absolute;
+		  content: "";
+		  height: 13px;
+		  width: 13px;
+		  left: 2px;
+		  bottom: 2px;
+		  background-color: white;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+
+		input:checked + .slider {
+		  background-color: #2196F3;
+		}
+
+		input:focus + .slider {
+		  box-shadow: 0 0 1px #2196F3;
+		}
+
+		input:checked + .slider:before {
+		  -webkit-transform: translateX(13px);
+		  -ms-transform: translateX(13px);
+		  transform: translateX(13px);
+		}
+		.slider.round {
+		  border-radius: 17px;
+		}
+
+		.slider.round:before {
+		  border-radius: 50%;
+		}
+
+		.material-icons{
+			cursor: pointer;
+		}
+	</style>
+	<script type="text/javascript" src="https://rawgithub.com/mozilla/pdf.js/gh-pages/build/pdf.js"></script>
+	<script src="javascripts/require.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
-  <body>
-    You requested the {{thisNote.subject}} note with ID: {{thisNote.id}}.
-  </body>
+
+	<div id="pdf-main-container" style="position: absolute; width: 70%">
+        <div id="pdf-meta" style="float:right">
+            <div id="pdf-buttons">
+                <button id="pdf-prev">Previous</button>
+                <button id="pdf-next">Next</button>
+            </div>
+            <div id="page-count-container" style="display:inline-block;">Page <input type="text" id="pdf-current-page" style="width: 50px"> of <div id="pdf-total-pages" style="display:inline-block;"></div></div>
+	        <div id="annotation-layer-control">
+		        <label class="switch">
+					<input id="annotation-layer-checkbox" type="checkbox">
+					<span class="slider round"></span>
+				</label>
+				<!-- disabled for style reasons <p style="margin:0"> Show Annotation Layer (You must have this enabled to add annotations)</p> -->
+			</div>
+			<div id="comment-bar" style="
+		    float: right;
+		    z-index: 1;
+		    width: 20%;
+		    height: 100%;
+		    background-color: #c3c3c3;">
+			</div>      
+        </div>
+	    <div id="pdf-loader">Loading document ...</div>
+	    <div id="pdf-contents" style="position: relative">
+	        <canvas id="pdf-canvas"
+		    	style="width: 70%; position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+			<canvas id="annotation-layer"
+			    style="width: 70%; position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+			<div id="page-loader">Loading page ...</div>
+	    </div>
+	</div>
+<!--
+	<div id="comment-bar" style="
+    float: right;
+    z-index: 1;
+    width: 30%;
+    height: 100%;
+    background-color: #c3c3c3;">
+	</div>-->
+	<script>
+		const username = "{{thisUser.kerbero}}"
+		const userID = "{{thisUser.mit_id}}"
+		const noteID = "{{noteID}}"
+		const deptID = "{{deptID}}"
+		const pdfID = "{{pdfID}}"		
+	</script>
+	<script src="/javascripts/note.js"></script>
 </html>

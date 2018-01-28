@@ -73,15 +73,16 @@ router.get('/search/number', function(req, res, next) {
 });
 
 /* GET note page. */
-router.get('/notes/:id', function(req, res, next) {
+router.get('/notes/:dept/:id/:pdfID', function(req, res, next) {
   if (!req.isAuthenticated()) {
     res.redirect('/');
     return;
   }
 
   let noteID = req.params.id;
-  let noteObj = { subject: "Linear Algebra", id: noteID }
-  res.render('note', { thisNote: noteObj, thisUser: req.user });
+  let deptID = req.params.dept;
+  let pdfID = req.params.pdfID;
+  res.render('note', { thisUser: req.user, noteID: noteID, deptID: deptID, pdfID: pdfID});
 });
 
 /* GET user page. */

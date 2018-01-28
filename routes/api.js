@@ -237,4 +237,12 @@ router.post('/upload', function(req, res, next) {
   });
 })
 
+router.post('/note/annotate', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+  console.log(req.body);
+})
+
 module.exports = router;
