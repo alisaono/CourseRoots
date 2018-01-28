@@ -73,6 +73,102 @@ $(document).ready(function(){
     addUploadCard()
   })
 
+  $("#instructors-input .add-row .btn").on('click', function() {
+    let $group = $("<div class='input-group new-row'></div>")
+    let $input = $("<input type='text' class='form-control' name='instructor' placeholder='Tim Beaver'>")
+    let $span = $("<span class='input-group-btn'></span>")
+
+    let $btn = $("<button type='btn' class='btn btn-default remove-row'>x</button>")
+    $btn.on('click', function() {
+      $group.remove()
+    })
+
+    $span.append($btn)
+    $group.append($input)
+    $group.append($span)
+    $("#instructors-input .add-row").before($group)
+  })
+
+  $("#upload-btn").on('click', function() {
+    let pdfURL = ""
+
+    let title = $("#title-input").val()
+    if (title === "") {
+      alert("Please enter the title!")
+      return
+    }
+
+    let dept = $("#dept-input").val()
+
+    let lowerDigits = $("#number-input").val().toUpperCase()
+    if (lowerDigits === "") {
+      alert("Please complete the subject number!")
+      return
+    }
+    if (lowerDigits.match(/[^A-Z0-9]/g)) {
+      alert("Subject number should only contain letters and/or numbers!")
+      return
+    }
+    let number = dept + "." + lowerDigits
+
+    let yearStr = $("#year-input").val()
+    if (yearStr === "") {
+      alert("Please enter the year!")
+      return
+    }
+    let yearRegex = RegExp('^[0-9]{4}$')
+    if (!yearRegex.test(yearStr)) {
+      alert("Year should be a 4-digit number!")
+      return
+    }
+    let year = parseInt(yearStr)
+
+    let term = $("#term-input").val()
+
+    let lecStr = $("#lec-input").val()
+    if (lecStr.match(/[^0-9]/g)) {
+      alert("Lecture number should only contain numbers!")
+      return
+    }
+    let lec = (lecStr !== "") ? parseInt(lecStr) : -1
+
+    let instructors = []
+    $("#instructors-input input").each(function(i) {
+      if ($(this).val() !== "") {
+        instructors.push($(this).val())
+      }
+    })
+
+    let newNote = {
+      pdf_url: pdfURL,
+      title: title,
+      dept: dept,
+      number: number,
+      year: year,
+      term: term,
+      lec: lec,
+      instructors: instructors,
+    }
+    $.ajax({
+      url: '/api/upload',
+      method: 'POST',
+      data: {note : JSON.stringify(newNote)},
+    }).done(function(response){
+      if (response !== "") {
+        alert("Error occurred :( Try again...")
+      }
+      location.reload()
+    })
+  })
+
+  $("#upload-modal").on('hidden.bs.modal', function (e) {
+    $("#pdf-input").fileinput('clear')
+    $("#upload-modal input[type='text']").val('')
+    $("#instructors-input .new-row").remove()
+    $("#dept-input").val("6")
+    $("#term-input").val("IAP")
+  })
+
   $("#favorites-sort").change(function() {
     let sortOption = $(this).val()
     switch(sortOption) {
@@ -196,10 +292,11 @@ function addProfField(name,placeholder,limit,prefix) {
       }).done(function(response){
         if (response === "") {
           $("#prof-"+name+" span").text(input)
+          $('#prof-modal').modal('hide')
         } else {
           alert("Error occurred :( Try again...")
+          location.reload()
         }
-        $('#prof-modal').modal('hide')
       })
     })
     $("#prof-modal").on('hidden.bs.modal', function (e) {
@@ -246,6 +343,7 @@ function addProfInput(name,placeholder,limit) {
         $("#prof-"+name).show()
       } else {
         alert("Error occurred :( Try again...")
+        location.reload()
       }
     })
   })

@@ -208,4 +208,33 @@ router.post('/me/unlike', function(req, res, next) {
   });
 })
 
+/* POST add user favorite */
+router.post('/upload', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
+  let noteObj = JSON.parse(req.body.note);
+  let deptID = noteObj.dept;
+  let userID = req.user.mit_id;
+
+  noteObj['author'] = req.user.kerbero;
+  noteObj['authorID'] = req.user.mit_id;
+  noteObj['popularity'] = 0;
+  noteObj['upload_time'] = Math.round(Date.now()/1000);
+
+  let newNoteRef = database.ref("/note_by_dept/"+deptID).push();
+  let noteID = newNoteRef.key;
+
+  let updates = {};
+  updates['/users/'+userID+'/uploads/'+noteID] = { dept: deptID };
+  updates['/note_by_dept/'+deptID+'/'+noteID] = noteObj;
+
+  database.ref().update(updates, function(error) {
+    let message = error ? error : "";
+    res.send(message);
+  });
+})
+
 module.exports = router;

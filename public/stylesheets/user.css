@@ -40,3 +40,36 @@
 #upload-card .card:hover {
   background-color: rgba(0,0,0,.125);
 }
+
+#upload-modal .form-inline {
+  margin: 10px 0;
+}
+
+#number-input {
+  text-transform: uppercase;
+}
+
+#year-input {
+  margin-right: 10px;
+}
+
+#instructors-input .input-group {
+  margin-bottom: 3px;
+}
+
+#instructors-input .new-row input {
+  border-right-width: 0;
+}
+
+#instructors-input .new-row .btn {
+  border-width: 1px 1px 1px 0;
+  border-style: solid;
+  border-color: #ced4da;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  color: #8e8e8e;
+}
+
+#instructors-input .add-row .btn {
+  width: 100%;
+}
