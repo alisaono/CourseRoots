@@ -100,6 +100,11 @@ h2 > a {
   margin-bottom: 30px;
 }
 
+.note-item h5 > small {
+  margin-left: 8px;
+  font-size: 0.8em;
+}
+
 .note-item h5 {
   margin-bottom: 20px;
 }

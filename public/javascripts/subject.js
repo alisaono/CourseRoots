@@ -4,6 +4,7 @@ $(document).ready(function(){
   let notesByTime = []
   let notesByPopularity = []
   let notesByYear = []
+  let notesByLecture = []
 
   let notesTaughtBy = {}
   let notesUploadBy = {}
@@ -89,6 +90,21 @@ $(document).ready(function(){
           })
         }
         updateNotes("#notes",notesByYear,notesHidden,thisUserID)
+        break
+      case "lecture":
+        if (notesByLecture.length !== notesByTime.length) {
+          notesByLecture = notesByTime.slice().sort(function compare(a,b) {
+            if (a.lec >= 0 && b.lec >= 0) {
+              if (a.lec > b.lec) return 1
+              if (a.lec < b.lec) return -1
+              return 0
+            }
+            if (a.lec >= 0) return 1
+            if (b.lec >= 0) return -1
+            return 0
+          })
+        }
+        updateNotes("#notes",notesByLecture,notesHidden,thisUserID)
         break
       default:
         return

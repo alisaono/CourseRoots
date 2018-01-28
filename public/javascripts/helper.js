@@ -36,6 +36,9 @@ function addNoteToRow(note,rowID,thisUserID) {
   let $cardBody = $("<div class='card-body'></div>")
   let $cardTitle = $("<h4 class='card-title'></h4>")
   let $cardSubTitle = $("<h5 class='card-subtitle '>" + sanitize(note.title) + "</h6>")
+  if (note.lec >= 0) {
+    $cardSubTitle.append("<small>L" + note.lec + "</small>")
+  }
 
   let $favCount = $("<span class='fav-count'>" + note.popularity + "</span>")
   let $favIcon = $("<img class='fav-icon'>")
