@@ -52,8 +52,8 @@ function showPDF(pdf_url) {
         var url_key = url_array[url_array.length-1]; // document ID
         dept_no = url_array[url_array.length-2]; // department number
 
-        var config = {};
-        firebase.initializeApp(config);
+        // var config = {};
+        // firebase.initializeApp(config);
 
         // Show the first page
         showPage(1);
@@ -127,7 +127,7 @@ function showPage(page_no) {
                     alert('click on circle: ');
                 }  
             });*/
-            console.log(__ANNOTATIONS);
+            // console.log(__ANNOTATIONS);
         });
     });
 }
@@ -185,11 +185,10 @@ function getMousePos(canvas, evt) {
 }
 
 function drawAnnotationLayer(page_no) {
-    ref = firebase.database().ref("/note_by_dept/18/test_note_20");
-    ref.once("value", function(snapshot) {
-        var annotations = snapshot.val().annotations;
+    $.getJSON("/api/notes/" + deptID + "/" + noteID,function(data){
+        let annotations = data.annotations;
         for (a in annotations) {
-            if(annotations[String(a)].page == __CURRENT_PAGE) {
+            if(annotations[String(a)] !== null && annotations[String(a)].page == __CURRENT_PAGE) {
                 var centerX = annotations[String(a)].x_coords;
                 var centerY = annotations[String(a)].y_coords;
 
@@ -223,20 +222,24 @@ function addAnnotation(x_coord, y_coord, page, content) {
       page: __CURRENT_PAGE,
       user: '',
       x_coords: x_coord,
-      y_coords: y_coord
+      y_coords: y_coord,
+      deptID: deptID,
+      noteID: noteID
     };
 
-    // var new_key = firebase.database().ref("/note_by_dept/18/test_note_20/annotations").push().key;
-    firebase.database().ref("/note_by_dept/18/test_note_20/annotations").push(new_annotation);
+    console.log(new_annotation)
 
-    /*firebase.database().ref("/note_by_dept/18/test_note_20/annotations").child("1").set({
-        content: content,
-        page: __CURRENT_PAGE,
-        user: '',
-        x_coords: x_coord,
-        y_coords: y_coord      
-    });*/
-
+    $.ajax({
+        url: '/api/annotate',
+        method: 'POST',
+        data: new_annotation,
+    }).done(function(response){
+        if (response === "") {
+            alert("Annotation added :)")
+        } else {
+            alert("Error occurred :( Try again...")
+        }
+    })
 }
 
 function isIntersect(point, circle) {

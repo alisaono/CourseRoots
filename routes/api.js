@@ -45,6 +45,22 @@ router.get('/notes/:dept', function(req, res, next) {
   });
 });
 
+/* GET note by id. */
+router.get('/notes/:dept/:id', function(req, res, next) {
+/*  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }*/
+  console.log('hi');
+  let deptID = req.params.dept;
+  let noteID = req.params.id;
+  let ref = database.ref("/note_by_dept/"+deptID+"/"+noteID);
+  ref.once("value").then(function(snapshot) {
+    let note = snapshot.val();
+    res.json(note);
+  });
+});
+
 /* GET notes by subject number. */
 router.get('/notes/number/:subject', function(req, res, next) {
   if (!req.isAuthenticated()) {
@@ -237,12 +253,35 @@ router.post('/upload', function(req, res, next) {
   });
 })
 
-router.post('/note/annotate', function(req, res, next) {
+router.post('/annotate', function(req, res, next) {
   if (!req.isAuthenticated()) {
     res.render('error',{ message : "Error 401 - Unauthorized" });
     return;
   }
+
+  console.log("annotate route");
   console.log(req.body);
+
+  let deptID = req.body.deptID;
+  let noteID = req.body.noteID;
+  let newAnnotationRef = database.ref("/note_by_dept/"+deptID+"/"+noteID+"/annotations").push();
+  let annotationID = newAnnotationRef.key;
+
+
+  let newValues = {};
+
+  newValues['content'] = req.body.content;
+  newValues['page'] = req.body.page;
+  newValues['user'] = req.user.kerbero;
+  newValues['x_coords'] = req.body.x_coords;
+  newValues['y_coords'] = req.body.y_coords;
+
+  console.log(newValues)
+
+  database.ref("/note_by_dept/"+deptID+"/"+noteID+"/annotations/" + annotationID).update(newValues, function(error) {
+    let message = error ? error : "";
+    res.send(message);
+  })
 })
 
 module.exports = router;
