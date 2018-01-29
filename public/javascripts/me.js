@@ -90,7 +90,12 @@ $(document).ready(function(){
   })
 
   $("#upload-btn").on('click', function() {
-    let pdfURL = ""
+    let files = $("#pdf-input").prop('files')
+    let file = files[0]
+    if (!file) {
+      alert("Please select a PDF file!")
+      return
+    }
 
     let title = $("#title-input").val()
     if (title === "") {
@@ -140,7 +145,6 @@ $(document).ready(function(){
     })
 
     let newNote = {
-      pdf_url: pdfURL,
       title: title,
       dept: dept,
       number: number,
@@ -149,16 +153,7 @@ $(document).ready(function(){
       lec: lec,
       instructors: instructors,
     }
-    $.ajax({
-      url: '/api/upload',
-      method: 'POST',
-      data: {note : JSON.stringify(newNote)},
-    }).done(function(response){
-      if (response !== "") {
-        alert("Error occurred :( Try again...")
-      }
-      location.reload()
-    })
+    signAndUploadNote(file, newNote)
   })
 
   $("#upload-modal").on('hidden.bs.modal', function (e) {
@@ -363,4 +358,47 @@ function addUploadCard() {
     $("#upload-modal").modal()
   })
   $("#uploads").prepend($wrapper)
+}
+
+function signAndUploadNote(file, newNote) {
+  let xhr = new XMLHttpRequest()
+  xhr.open('GET', `/api/sign_s3`)
+  xhr.onreadystatechange = () => {
+    if(xhr.readyState === 4) {
+      if(xhr.status === 200) {
+        let response = JSON.parse(xhr.responseText)
+        newNote['pdfID'] = response.pdfID
+        uploadNote(file, response.signedRequest, newNote)
+      } else {
+        alert("Error occurred :( Try again...")
+        location.reload()
+      }
+    }
+  }
+  xhr.send()
+}
+
+function uploadNote(file, signedRequest, newNote) {
+  let xhr = new XMLHttpRequest()
+  xhr.open('PUT', signedRequest)
+  xhr.onreadystatechange = () => {
+    if(xhr.readyState === 4) {
+      if(xhr.status === 200) {
+        $.ajax({
+          url: '/api/upload',
+          method: 'POST',
+          data: {note : JSON.stringify(newNote)},
+        }).done(function(response){
+          if (response !== "") {
+            alert("Error occurred :( Try again...")
+          }
+          location.reload()
+        })
+      } else {
+        alert("Error occurred :( Try again...")
+        location.reload()
+      }
+    }
+  }
+  xhr.send(file)
 }
