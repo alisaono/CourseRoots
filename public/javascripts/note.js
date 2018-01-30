@@ -103,6 +103,9 @@ function showPage(page_no) {
                         __ANNOTATIONS.push({id: String(a), x: annotations[String(a)].x_coords, y: annotations[String(a)].y_coords});
                     }
                 }
+                if ($("#comment-bar .comment-item").length === 0) {
+                  $("#comment-bar").append("<p class='no-comments'>No comments on this page yet.<br/>Be the first!</p>")
+                }
             });
         });
     });
@@ -175,9 +178,10 @@ $("#annotation-layer").on('click', function(evt) {
     } else {
       $(`#${highlighted_annotation_id}`).addClass('active')
       let commentPos = $(`#${highlighted_annotation_id}`).position().top - 10
+      let commentOffset = $(`#${highlighted_annotation_id}`).offset().top - 86
       $("#comment-bar").animate({ scrollTop: commentPos }, 1000, 'swing')
       window.scroll({
-        top: commentPos,
+        top: commentOffset,
         left: 0,
         behavior: 'smooth'
       })

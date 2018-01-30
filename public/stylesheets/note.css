@@ -3,7 +3,7 @@
 }
 
 #pdf-main-container {
-  padding-top: 20px;
+  padding: 20px;
   margin-top: 20px;
 }
 
@@ -17,6 +17,10 @@
 
 #page-count-container input, span {
   margin: 5px;
+}
+
+#pdf-loader, #page-loader {
+  color: #ffffff;
 }
 
 #pdf-contents {
@@ -83,4 +87,19 @@
   margin: 0;
   color: #545b62;
   cursor: pointer;
+}
+
+.no-comments {
+  margin-left: 10px;
+  margin-top: 10px;
+  color: #8e8e8e;
+}
+
+@media (max-width: 991.98px) {
+  #pdf-meta {
+    padding: 20px;
+  }
+  #pdf-meta button {
+    margin: 10px 0;
+  }
 }

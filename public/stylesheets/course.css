@@ -27,7 +27,7 @@
 }
 
 .sidebar-nav {
-  padding: 20px 20px 74px 20px;
+  padding: 20px 20px 86px 20px;
 }
 
 .sidebar-nav label {
@@ -38,6 +38,10 @@
   color: #ffffff;
   cursor: pointer;
   font-size: 0.9em;
+}
+
+.checkbox-more:hover {
+  text-decoration: underline;
 }
 
 .short-text {

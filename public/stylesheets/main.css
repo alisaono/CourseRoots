@@ -113,8 +113,12 @@ nav {
   top: 0;
   width: 250px;
   margin: 0;
-  padding: 0 0 54px 0;
+  padding: 0 0 68px 0;
   list-style: none;
+}
+
+.sidebar-nav a {
+  text-decoration: none;
 }
 
 .sidebar-nav li {
