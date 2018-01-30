@@ -13,6 +13,27 @@
     <link href="/stylesheets/main.css" rel="stylesheet">
 
 	<style>
+		.navbar {
+		      margin-bottom: 0;
+		      background-color: #a3d852;
+		      z-index: 9999;
+		      border: 0;
+		      font-size: 12px !important;
+		      line-height: 1.42857143 !important;
+		      letter-spacing: 4px;
+		      border-radius: 0;
+		      font-family: Montserrat, sans-serif;
+		}
+		.logo{
+		    height: 50px;
+		    width: 50px;
+		    padding: 5px;
+		    margin:0px;
+		    vertical-align: top;
+		}
+		.bg-green{
+		  background-color: #a3d852
+		}
 		/* The switch - the box around the slider */
 		.switch {
 		  position: relative;
@@ -105,9 +126,12 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-green fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="/home">CourseRoots</a>
+        <button class="navbar-brand btn logo" style="background: url(images/icon.png) center no-repeat; background-size: 100% 100%;" href="/home"></button>
+        <div class="navbar-header">
+          <a class="navbar-brand" style="margin-left: 10px" href="/home">CourseRoots</a>
+        </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -132,7 +156,19 @@
     </nav>
 
 	<div class="container">
-	    <div class="row" id="pdf-meta">
+		<div class="row" id="pdf-main-container">
+		    <div class="col-sm-9" style="background-color: #ced4da" id="pdf-contents">
+		    	<div id="pdf-loader">Loading document ...</div>
+		        <canvas id="pdf-canvas" class="fade-in"
+			    	style="position: absolute; width: 500px; z-index: 0;"></canvas>
+				<canvas id="annotation-layer" class="fade-in"
+				    style="position: absolute; width: 500px; z-index: 1;"></canvas>
+				<div id="page-loader">Loading page ...</div>
+		    </div>
+			<div class="col-sm-3" id="comment-bar" style="z-index: 2; height: 100%; outline-width: 1px; outline-color: #ced4da; overflow-y: scroll">
+			</div>
+		</div>
+		<div class="row" id="pdf-meta">
 	        <div class="col-sm-4" id="pdf-buttons">
 	            <button id="pdf-prev" class="btn btn-success">Previous</button>
 	            <button id="pdf-next" class="btn btn-success">Next</button>
@@ -150,19 +186,15 @@
 		        </a></p>-->
 		    </div>   
 	    </div>
-		<div class="row" id="pdf-main-container">
-		    <div class="col-sm-9" id="pdf-contents">
-		    	<div id="pdf-loader">Loading document ...</div>
-		        <canvas id="pdf-canvas" class="fade-in"
-			    	style="position: absolute; width: 500px; z-index: 0;"></canvas>
-				<canvas id="annotation-layer" class="fade-in"
-				    style="position: absolute; width: 500px; z-index: 1;"></canvas>
-				<div id="page-loader">Loading page ...</div>
-		    </div>
-			<div class="col-sm-3" id="comment-bar" style="z-index: 2; height: 100%; overflow-y: scroll">
-			</div>
-		</div>
 	</div>
+	<!-- Footer -->
+        <footer class="py-5 bg-dark">
+          <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; CourseRoots 2018</p>
+            <p class="m-0 text-center text-white">Made with &hearts; by Sinusoidal Suite</p>
+          </div>
+          <!-- /.container -->
+        </footer>
 </body>
 
 	<script>
