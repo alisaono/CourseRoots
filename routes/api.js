@@ -1,8 +1,22 @@
 const express = require('express');
-const firebase = require('firebase');
+const aws = require('aws-sdk');
 const database = require('../modules/firebase');
 
 const router = express.Router();
+
+let S3_BUCKET, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY;
+if (process.env.NODE_ENV) { // Running on production server
+	let SECRETS = process.env; // Configureation is stored on process environment
+  S3_BUCKET = SECRETS.S3_BUCKET;
+  AWS_ACCESS_KEY_ID = SECRETS.AWS_ACCESS_KEY_ID;
+  AWS_SECRET_ACCESS_KEY = SECRETS.AWS_SECRET_ACCESS_KEY;
+} else { // Running on local machine
+	let SECRETS = require('../config');
+  S3_BUCKET = SECRETS.AWS.S3_BUCKET;
+  AWS_ACCESS_KEY_ID = SECRETS.AWS.AWS_ACCESS_KEY_ID;
+  AWS_SECRET_ACCESS_KEY = SECRETS.AWS.AWS_SECRET_ACCESS_KEY;
+}
+const s3 = new aws.S3({accessKeyId: AWS_ACCESS_KEY_ID, secretAccessKey: AWS_SECRET_ACCESS_KEY});
 
 /* ILLEGAL access. */
 router.get('/', function(req, res, next) {
@@ -47,11 +61,11 @@ router.get('/notes/:dept', function(req, res, next) {
 
 /* GET note by id. */
 router.get('/notes/:dept/:id', function(req, res, next) {
-/*  if (!req.isAuthenticated()) {
+  if (!req.isAuthenticated()) {
     res.render('error',{ message : "Error 401 - Unauthorized" });
     return;
-  }*/
-  console.log('hi');
+  }
+
   let deptID = req.params.dept;
   let noteID = req.params.id;
   let ref = database.ref("/note_by_dept/"+deptID+"/"+noteID);
@@ -253,6 +267,70 @@ router.post('/upload', function(req, res, next) {
   });
 })
 
+/* POST edits to note's information. */
+router.post('/edit/notes/:dept/:id', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
+  let edits = JSON.parse(req.body.edits);
+  let deptID = req.params.dept;
+  let noteID = req.params.id;
+  let userID = req.user.mit_id;
+
+  let noteRef = database.ref(`/note_by_dept/${deptID}/${noteID}`);
+  noteRef.once("value").then(function(snapshot) {
+    if (snapshot.val().authorID === userID) {
+      noteRef.update(edits, function(error) {
+        let message = error ? error : "";
+        res.send(message);
+      })
+    } else {
+      res.render('error',{ message : "Error 401 - Unauthorized" });
+    }
+  })
+})
+
+/* POST delete note. */
+router.post('/delete', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
+  let deptID = req.body.dept;
+  let noteID = req.body.noteID;
+  let userID = req.user.mit_id;
+
+  let noteRef = database.ref(`/note_by_dept/${deptID}/${noteID}`);
+  noteRef.once("value").then(function(snapshot) {
+    if (snapshot.val().authorID === userID) {
+      let fileKey = snapshot.val().pdfID
+      let updates = {}
+      updates['/users/'+userID+'/uploads/'+noteID] = null
+      updates['/note_by_dept/'+deptID+'/'+noteID] = null
+
+      database.ref().update(updates, function(error) {
+        if (error) {
+          res.send(error);
+        } else {
+          let params = {
+            Bucket: S3_BUCKET,
+            Key: fileKey,
+          }
+          s3.deleteObject(params, function(err, data) {
+            if (err) console.log(err, err.stack);
+          })
+          res.send("");
+        }
+      })
+    } else {
+      res.render('error',{ message : "Error 401 - Unauthorized" });
+    }
+  })
+})
+
 router.post('/annotate', function(req, res, next) {
   if (!req.isAuthenticated()) {
     res.render('error',{ message : "Error 401 - Unauthorized" });
@@ -281,6 +359,35 @@ router.post('/annotate', function(req, res, next) {
   database.ref("/note_by_dept/"+deptID+"/"+noteID+"/annotations/" + annotationID).update(newValues, function(error) {
     let message = error ? error : "";
     res.send(message);
+  })
+})
+
+/* GET a signed S3 upload URL */
+router.get('/sign_s3', (req, res) => {
+  let userID = req.user.mit_id
+  let timestamp = Date.now()
+  let suffix = Math.floor(Math.random()*400)
+  let fileName = userID + '-' + timestamp + '-' + suffix + '.pdf'
+
+  let params = {
+    Bucket: S3_BUCKET,
+    Key: fileName,
+    Expires: 60,
+    ContentType: 'application/pdf',
+    ACL: 'public-read',
+  }
+
+  s3.getSignedUrl('putObject', params, (err, data) => {
+    if (err) {
+      console.log(err)
+      return res.end()
+    }
+    let returnData = {
+      signedRequest: data,
+      pdfID: fileName,
+    }
+    res.write(JSON.stringify(returnData))
+    res.end()
   })
 })
 

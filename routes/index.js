@@ -37,6 +37,11 @@ const deptHeaders = {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  if (req.isAuthenticated()) {
+    res.redirect('/home');
+    return;
+  }
+
   res.render('landing');
 });
 

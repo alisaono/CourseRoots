@@ -68,12 +68,12 @@ $(document).ready(function(){
         if (a.upload_time > b.upload_time) return -1
         return 0
       })
-      updateNotes("#uploads",uploadsByTime,null,thisUserID)
+      updateNotes("#uploads",uploadsByTime,null,thisUserID,true)
     }
     addUploadCard()
   })
 
-  $("#instructors-input .add-row .btn").on('click', function() {
+  $(".add-row .btn").on('click', function() {
     let $group = $("<div class='input-group new-row'></div>")
     let $input = $("<input type='text' class='form-control' name='instructor' placeholder='Tim Beaver'>")
     let $span = $("<span class='input-group-btn'></span>")
@@ -86,19 +86,16 @@ $(document).ready(function(){
     $span.append($btn)
     $group.append($input)
     $group.append($span)
-    $("#instructors-input .add-row").before($group)
+    $(this).parent().before($group)
   })
 
   $("#upload-btn").on('click', function() {
-    let pdfURL = ""
-
-    let title = $("#title-input").val()
-    if (title === "") {
-      alert("Please enter the title!")
+    let files = $("#pdf-input").prop('files')
+    let file = files[0]
+    if (!file) {
+      alert("Please select a PDF file!")
       return
     }
-
-    let dept = $("#dept-input").val()
 
     let lowerDigits = $("#number-input").val().toUpperCase()
     if (lowerDigits === "") {
@@ -109,56 +106,17 @@ $(document).ready(function(){
       alert("Subject number should only contain letters and/or numbers!")
       return
     }
-    let number = dept + "." + lowerDigits
 
-    let yearStr = $("#year-input").val()
-    if (yearStr === "") {
-      alert("Please enter the year!")
+    let newNote = validateNoteFields("#title-input","#year-input","#lec-input","#instructors-input")
+    if (newNote === null) {
       return
     }
-    let yearRegex = RegExp('^[0-9]{4}$')
-    if (!yearRegex.test(yearStr)) {
-      alert("Year should be a 4-digit number!")
-      return
-    }
-    let year = parseInt(yearStr)
 
-    let term = $("#term-input").val()
-
-    let lecStr = $("#lec-input").val()
-    if (lecStr.match(/[^0-9]/g)) {
-      alert("Lecture number should only contain numbers!")
-      return
-    }
-    let lec = (lecStr !== "") ? parseInt(lecStr) : -1
-
-    let instructors = []
-    $("#instructors-input input").each(function(i) {
-      if ($(this).val() !== "") {
-        instructors.push($(this).val())
-      }
-    })
-
-    let newNote = {
-      pdf_url: pdfURL,
-      title: title,
-      dept: dept,
-      number: number,
-      year: year,
-      term: term,
-      lec: lec,
-      instructors: instructors,
-    }
-    $.ajax({
-      url: '/api/upload',
-      method: 'POST',
-      data: {note : JSON.stringify(newNote)},
-    }).done(function(response){
-      if (response !== "") {
-        alert("Error occurred :( Try again...")
-      }
-      location.reload()
-    })
+    let dept = $("#dept-input").val()
+    newNote['dept'] = dept
+    newNote['number'] = dept + "." + lowerDigits
+    newNote['term'] = $("#term-input").val()
+    signAndUploadNote(file, newNote)
   })
 
   $("#upload-modal").on('hidden.bs.modal', function (e) {
@@ -167,6 +125,53 @@ $(document).ready(function(){
     $("#instructors-input .new-row").remove()
     $("#dept-input").val("6")
     $("#term-input").val("IAP")
+  })
+
+  $("#edit-note-btn").on('click', function() {
+    let edittedNote = validateNoteFields("#new-title-input","#new-year-input","#new-lec-input","#new-instructors-input")
+    if (edittedNote === null) {
+      return
+    }
+
+    edittedNote['term'] = $("#new-term-input").val()
+    let dept = $("#new-dept-input").val()
+    let noteID = $("#edit-note-id").val()
+
+    $.ajax({
+      url: `/api/edit/notes/${dept}/${noteID}`,
+      method: 'POST',
+      data: {edits : JSON.stringify(edittedNote)},
+    }).done(function(response){
+      if (response !== "") {
+        alert("Error occurred :( Try again...")
+      }
+      location.reload()
+    })
+  })
+
+  $("#delete-note-btn").on('click', function() {
+    const deleteMsg = "Are you sure you want to delete this note? You can't restore it once deleted!"
+    if (confirm(deleteMsg)) {
+      let deletedNote = {
+        dept: $("#new-dept-input").val(),
+        noteID: $("#edit-note-id").val(),
+      }
+      $.ajax({
+        url: '/api/delete',
+        method: 'POST',
+        data: deletedNote,
+      }).done(function(response){
+        if (response !== "") {
+          alert("Error occurred :( Try again...")
+        }
+        location.reload()
+      })
+    }
+  })
+
+  $("#note-modal").on('hidden.bs.modal', function (e) {
+    $("#note-modal input[type='text']").val('')
+    $("#new-instructors-input .new-row").remove()
   })
 
   $("#favorites-sort").change(function() {
@@ -216,7 +221,7 @@ $(document).ready(function(){
     let sortOption = $(this).val()
     switch(sortOption) {
       case "upload_time":
-        updateNotes("#uploads",uploadsByTime,null,thisUserID)
+        updateNotes("#uploads",uploadsByTime,null,thisUserID,true)
         addUploadCard()
         break
       case "popularity":
@@ -227,7 +232,7 @@ $(document).ready(function(){
             return 0
           })
         }
-        updateNotes("#uploads",uploadsByPopularity,null,thisUserID)
+        updateNotes("#uploads",uploadsByPopularity,null,thisUserID,true)
         addUploadCard()
         break
       case "year":
@@ -242,7 +247,7 @@ $(document).ready(function(){
             return 0
           })
         }
-        updateNotes("#uploads",uploadsByYear,null,thisUserID)
+        updateNotes("#uploads",uploadsByYear,null,thisUserID,true)
         addUploadCard()
         break
       case "number":
@@ -251,7 +256,7 @@ $(document).ready(function(){
             return compareSubjects(a,b)
           })
         }
-        updateNotes("#uploads",uploadsByNumber,null,thisUserID)
+        updateNotes("#uploads",uploadsByNumber,null,thisUserID,true)
         addUploadCard()
         break
       default:
@@ -259,6 +264,52 @@ $(document).ready(function(){
     }
   })
 })
+
+function validateNoteFields(titleID, yearID, lecID, instructorsID) {
+  let title = $(titleID).val()
+  if (title === "") {
+    alert("Please enter the title!")
+    return null
+  }
+
+  let yearStr = $(yearID).val()
+  if (yearStr === "") {
+    alert("Please enter the year!")
+    return null
+  }
+  let yearRegex = RegExp('^[0-9]{4}$')
+  if (!yearRegex.test(yearStr)) {
+    alert("Year should be a 4-digit number!")
+    return null
+  }
+  let year = parseInt(yearStr)
+
+  let lecStr = $(lecID).val()
+  if (lecStr.match(/[^0-9]/g)) {
+    alert("Lecture number should only contain numbers!")
+    return null
+  }
+  let lec = (lecStr !== "") ? parseInt(lecStr) : -1
+
+  let instructors = []
+  $(`${instructorsID} input`).each(function(i) {
+    if ($(this).val() !== "") {
+      instructors.push($(this).val())
+    }
+  })
+  if (instructors.length === 0) {
+    alert("Please enter instructor(s)!")
+    return null
+  }
+
+  let extractedFields = {
+    title: title,
+    year: year,
+    lec: lec,
+    instructors: instructors,
+  }
+  return extractedFields
+}
 
 function addProfField(name,placeholder,limit,prefix) {
   let $row = $("<div id='prof-" + name + "' class='row'></div>")
@@ -363,4 +414,47 @@ function addUploadCard() {
     $("#upload-modal").modal()
   })
   $("#uploads").prepend($wrapper)
+}
+
+function signAndUploadNote(file, newNote) {
+  let xhr = new XMLHttpRequest()
+  xhr.open('GET', `/api/sign_s3`)
+  xhr.onreadystatechange = () => {
+    if(xhr.readyState === 4) {
+      if(xhr.status === 200) {
+        let response = JSON.parse(xhr.responseText)
+        newNote['pdfID'] = response.pdfID
+        uploadNote(file, response.signedRequest, newNote)
+      } else {
+        alert("Error occurred :( Try again...")
+        location.reload()
+      }
+    }
+  }
+  xhr.send()
+}
+
+function uploadNote(file, signedRequest, newNote) {
+  let xhr = new XMLHttpRequest()
+  xhr.open('PUT', signedRequest)
+  xhr.onreadystatechange = () => {
+    if(xhr.readyState === 4) {
+      if(xhr.status === 200) {
+        $.ajax({
+          url: '/api/upload',
+          method: 'POST',
+          data: {note : JSON.stringify(newNote)},
+        }).done(function(response){
+          if (response !== "") {
+            alert("Error occurred :( Try again...")
+          }
+          location.reload()
+        })
+      } else {
+        alert("Error occurred :( Try again...")
+        location.reload()
+      }
+    }
+  }
+  xhr.send(file)
 }

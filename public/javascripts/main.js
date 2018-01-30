@@ -12,7 +12,7 @@ $(document).ready(function(){
       noteObj.id = noteID
       featuredNotes.push(noteObj)
     }
-    for (let i = 0; i < featuredNotes.length; i++) {
+    for (let i = 0; i < Math.min(4,featuredNotes.length); i++) {
       let note = featuredNotes[i]
       addNoteToRow(note,"#notes-featured",thisUserID)
     }
