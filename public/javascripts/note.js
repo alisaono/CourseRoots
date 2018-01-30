@@ -12,25 +12,6 @@ PDFJS.disableworker = true;
 var url = "https://s3.amazonaws.com/sinusoidalsuite-courseroots/" + pdfID;
 showPDF(url);
 
-//TODO: add comment bar that shows up with annotation layer - blocks for individual annotations and hovering over marker should go to specific comment
-
-/*
-// change to annotations
-__CANVAS.addEventListener('hover', (e) => {
-  const pos = {
-    x: e.clientX,
-    y: e.clientY
-  };
-  circles.forEach(circle => {
-    if (isIntersect(mousePoint, circle)) {
-      alert('click on circle: ' + circle.id);
-    }
-  });
-});
-
-function isIntersect(point, circle) {
-  return Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.radius;
-}*/
   // Initialize and load the PDF
 function showPDF(pdf_url) {
     // Show the pdf loader
@@ -93,7 +74,13 @@ function showPage(page_no) {
             __PAGE_RENDERING_IN_PROGRESS = 0;
 
             // Re-enable Prev & Next buttons
-            $("#pdf-next, #pdf-prev").removeAttr('disabled');
+            if (__CURRENT_PAGE > 1) {
+                $("#pdf-prev").removeAttr('disabled');
+            }
+
+            if (__CURRENT_PAGE < __TOTAL_PAGES) {
+                $("#pdf-next").removeAttr('disabled');
+            }
 
             // Show the canvas and hide the page loader
             $("#pdf-canvas").show();
@@ -110,31 +97,19 @@ function showPage(page_no) {
                     if(annotations[String(a)] !== null && annotations[String(a)].page == __CURRENT_PAGE) {
                         var content = annotations[String(a)].content;
                         var user = annotations[String(a)].user;
-                        $("#comment-bar").append("<div id='" + String(a) + "' style='color: white; background-color: #a3d852; margin-bottom: 5px; padding: 5px'><h3>" 
-                            + user + "</h3><p>" + content + "</p></div>");
+                        if (user == username) {
+                            var funcName = "deleteAnnotation('" + String(a) + "')";
+                            $("#comment-bar").append("<div id='" + String(a) + "' class='fade-in' style='color: white; background-color: #a3d852; border-radius:10px; margin-bottom: 5px; padding: 10px'><h3>" 
+                                + user + "</h3><p>" + content + "</p>"
+                                + "<button id='delete' onclick=" + funcName + ">Delete</button></div>");                            
+                        } else {
+                            $("#comment-bar").append("<div id='" + String(a) + "' class='fade-in' style='color: white; background-color: #a3d852; border-radius:10px; margin-bottom: 5px; padding: 10px'><h3>" 
+                                + user + "</h3><p>" + content + "</p></div>");
+                        }
                         __ANNOTATIONS.push({id: String(a), x: annotations[String(a)].x_coords, y: annotations[String(a)].y_coords});
                     }
                 }
             });
-/*
-            for (a in __ANNOTATIONS) {
-                __CANVAS.addEventListener('click', (e) => {
-                    const pos = {
-                        x: e.clientX - rect.left,
-                        y: e.clientY - rect.top
-                    };
-                    console.log(pos);
-                    const circle = {
-                        x: __ANNOTATIONS[String(a)].x_coords,
-                        y: __ANNOTATIONS[String(a)].y_coords,
-                        radius: 10
-                    };
-
-                    if (isIntersect(mousePoint, circle)) {
-                        alert('click on circle: ');
-                    }  
-                });
-            }*/
         });
     });
 }
@@ -155,6 +130,21 @@ $("#pdf-next").on('click', function() {
 document.getElementById("pdf-current-page").addEventListener("input", function(evt){
     showPage(Number(this.value));
 });
+
+document.onkeydown = checkKey;
+
+function checkKey(evt) {
+    evt = evt || window.event;
+
+    if (evt.keyCode == '37') {
+        if(__CURRENT_PAGE != 1)
+            showPage(--__CURRENT_PAGE);
+    }
+    else if (evt.keyCode == '39') {
+        if(__CURRENT_PAGE != __TOTAL_PAGES)
+            showPage(++__CURRENT_PAGE);
+    }
+}
 
 var highlighted_annotation_id;
 
@@ -214,39 +204,6 @@ function getMousePos(canvas, evt) {
     };
 }
 
-/* Scale factor?
-function drawAnnotationLayer(page_no){
-    var scaleFactor= __CANVAS.getBoundingClientRect().width / __CANVAS.offsetWidth;
-
-    __CANVAS_CTX.clearRect(0, 0, __CANVAS_CTX.width, __CANVAS_CTX.height);
-
-    __CANVAS_CTX.save();
-    __CANVAS_CTX.scale(scaleFactor,scaleFactor);
-
-    $.getJSON("/api/notes/" + deptID + "/" + noteID,function(data){
-        let annotations = data.annotations;
-        for (a in annotations) {
-            if(annotations[String(a)] !== null && annotations[String(a)].page == __CURRENT_PAGE) {
-                var centerX = annotations[String(a)].x_coords;
-                var centerY = annotations[String(a)].y_coords;
-                var rect = __CANVAS.getBoundingClientRect();
-
-                __CANVAS_CTX.beginPath();
-                __CANVAS_CTX.arc(centerX, centerY, 10, 0, 2 * Math.PI, false);
-                __CANVAS_CTX.fillStyle = 'green';
-                __CANVAS_CTX.fill();
-                __CANVAS_CTX.lineWidth = 5;
-                __CANVAS_CTX.strokeStyle = '#003300';
-                __CANVAS_CTX.stroke();
-
-            }
-        }
-    });
-
-    __CANVAS_CTX.restore();
-}*/
-
-
 // draw annotation pins on layer
 function drawAnnotationLayer(page_no) {
     $.getJSON("/api/notes/" + deptID + "/" + noteID,function(data){
@@ -294,6 +251,50 @@ function addAnnotation(x_coord, y_coord, page, content) {
             alert("Error occurred :( Try again...")
         }
     })
+    showPage(__CURRENT_PAGE);
+}
+
+function editAnnotation(id) {
+    var edit_annotation = {
+        content: content,
+        annotationID: id,
+        deptID: deptID,
+        noteID: noteID
+    };
+
+    $.ajax({
+        url: '/api/annotate/edit',
+        method: 'POST',
+        data: edit_annotation,
+    }).done(function(response){
+        if (response === "") {
+            alert("Annotation edited :)")
+        } else {
+            alert("Error occurred :( Try again...")
+        }
+    })
+    showPage(__CURRENT_PAGE);
+}
+
+function deleteAnnotation(id) {
+    let deleted_annotation = {
+        annotationID: id,
+        deptID: deptID,
+        noteID: noteID
+    }
+
+    $.ajax({
+        url: '/api/annotate/delete',
+        method: 'POST',
+        data: deleted_annotation,
+    }).done(function(response){
+        if (response === "") {
+            alert("Annotation deleted")
+        } else {
+            alert("Error occurred :( Try again...")
+        }
+    })
+    showPage(__CURRENT_PAGE);
 }
 
 function isIntersect(point, circle) {

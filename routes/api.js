@@ -362,6 +362,51 @@ router.post('/annotate', function(req, res, next) {
   })
 })
 
+router.post('/annotate/edit', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
+  console.log("edit annotation route");
+  console.log(req.body);
+
+  let deptID = req.body.deptID;
+  let noteID = req.body.noteID;
+  let annotationID = req.body.annotationID;
+
+  let newValues = {};
+
+  newValues['content'] = req.body.content;
+
+  let annotationRef = database.ref("/note_by_dept/"+deptID+"/"+noteID+"/annotations/" + annotationID);
+
+  annotationRef.update(newValues, function(error) {
+    let message = error ? error : "";
+    res.send(message);
+  })
+})
+
+router.post('/annotate/delete', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
+  console.log("delete annotation route");
+  console.log(req.body);
+
+  let deptID = req.body.deptID;
+  let noteID = req.body.noteID;
+  let annotationID = req.body.annotationID;
+  let annotationRef = database.ref("/note_by_dept/"+deptID+"/"+noteID+"/annotations/" + annotationID);
+
+  annotationRef.remove(function(error) {
+    let message = error ? error : "";
+    res.send(message);
+  })
+})
+
 /* GET a signed S3 upload URL */
 router.get('/sign_s3', (req, res) => {
   let userID = req.user.mit_id
