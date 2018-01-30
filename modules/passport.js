@@ -5,7 +5,7 @@ const database = require('./firebase');
 let host;
 let openIDConfig;
 if (process.env.NODE_ENV) { // Running on production server
-	host = 'https://desolate-ridge-53183.herokuapp.com';
+	host = 'http://www.courseroots.site/';
 	let SECRETS = process.env; // Configureation is stored on process environment
 	openIDConfig = {
 		clientID: SECRETS.OPENID_CLIENT_ID,
