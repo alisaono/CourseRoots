@@ -15,7 +15,7 @@ $(document).ready(function(){
   let notesIDs = []
 
   let notes = []
-  $.getJSON("/api/notes/number/"+subjectID,function(data){
+  $.getJSON("/api/find/"+subjectID,function(data){
     if (data === null) {
       $(".no-notes").show()
       $("#sidebar-toggle").prop('disabled',true)

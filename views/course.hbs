@@ -75,12 +75,12 @@
       <div id="page-content-wrapper">
         <div class="container">
 
-          <div id="search-row" class="row">
+          <div id="search-row" class="row fixed-top">
             <button type="button" id="sidebar-toggle" class="btn btn-secondary" data-toggle="button" aria-pressed="false" autocomplete="off">
               Filter
             </button>
 
-            <div class="col-lg-6 col-md-4 col-sm-4 search-bar">
+            <div class="col-lg-6 col-md-6 col-sm-6 search-bar">
               <form id="subject-search" name="subject_search_form" method="get" action="/search/number">
                 <div class="input-group">
                   <input type="text" id="subject-input" class="form-control" name="subject" placeholder="Search by subject number...">
@@ -123,11 +123,12 @@
             </div>
           </div>
 
-          <!-- Row Heading -->
-          <h2 class="my-4">{{ deptHeader }}</h2>
-          <div id="notes" class="row"></div>
-          <div class="row">
-            <p class='no-notes'>No notes available at this time. Check again later!</p>
+          <div class="container">
+            <h2 class="my-4">{{ deptHeader }}</h2>
+            <div id="notes" class="row"></div>
+            <div class="row">
+              <p class='no-notes'>No notes available at this time. Check again later!</p>
+            </div>
           </div>
         </div>
         <!-- /.container -->

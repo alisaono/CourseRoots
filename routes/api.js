@@ -76,7 +76,7 @@ router.get('/notes/:dept/:id', function(req, res, next) {
 });
 
 /* GET notes by subject number. */
-router.get('/notes/number/:subject', function(req, res, next) {
+router.get('/find/:subject', function(req, res, next) {
   if (!req.isAuthenticated()) {
     res.render('error',{ message : "Error 401 - Unauthorized" });
     return;

@@ -10,8 +10,33 @@ body {
   overflow-x: hidden;
 }
 
+nav {
+  z-index: 1000;
+}
+
 .nav-link img {
   height: 22px;
+}
+
+/* Search options */
+#search-row {
+  padding: 74px 20px 20px 20px; /* padding top = nav bar height + margin top */
+  background-color: #ffffff;
+  border-bottom: 1px solid #ced4da;
+  z-index: 5;
+  justify-content: center;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+.search-bar .btn {
+  border: 1px solid #ced4da;
+}
+
+.form-inline > .control-label {
+  margin-right: 10px;
 }
 
 /* Wrappers for sidebar */
@@ -46,12 +71,14 @@ body {
 }
 
 #page-content-wrapper {
-  width: 100%;
+  padding-top: 78px; /* search row height */
   position: absolute;
+  right: 0;
+  left: 0;
 }
 
-#wrapper.toggled #page-content-wrapper {
-  margin-right: -250px; /* i.e. width of side nav bar */
+#wrapper.toggled #page-content-wrapper, #wrapper.toggled #search-row {
+  left: 250px; /* i.e. width of side nav bar */
 }
 
 /* Sidebar */
@@ -76,21 +103,14 @@ body {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Search options */
-#search-row {
-  padding-top: 20px;
-  padding-left: 20px;
-}
-
-.search-bar .btn {
-  border: 1px solid #ced4da;
-}
-
-.form-inline > .control-label {
-  margin-right: 10px;
-}
-
 /* Notes */
+h2 {
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
 h2 > a {
   margin-left: 10px;
   font-size: 0.6em;
@@ -98,6 +118,10 @@ h2 > a {
 
 .note-item {
   margin-bottom: 30px;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .note-item h5 > small {
@@ -126,4 +150,19 @@ h2 > a {
   margin-left: 18px;
   margin-right: 18px;
   color: #EF4836;
+}
+
+@media (max-width: 991.98px) { /* Small devices like tablets etc */
+  #sidebar-toggle {
+    display: none;
+  }
+  #wrapper.toggled {
+    padding-left: 0;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    width: 0;
+  }
+  #wrapper.toggled #page-content-wrapper, #wrapper.toggled #search-row {
+    left: 0;
+  }
 }
