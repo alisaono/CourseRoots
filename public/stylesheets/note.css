@@ -18,6 +18,10 @@
   margin: 5px;
 }
 
+#pdf-contents {
+  position: relative;
+}
+
 #show-annotation-layer {
   display: none;
 }

@@ -7,7 +7,7 @@ var __PDF_DOC,
     __CANVAS = $('#annotation-layer').get(0),
     __CANVAS_CTX = __CANVAS.getContext('2d');
 
-const pdfPadding = 20;
+const pdfPadding = 40;
 
 PDFJS.disableworker = true;
 // URL of PDF document
@@ -37,6 +37,8 @@ function showPDF(pdf_url) {
     });;
 }
 
+let scaleFactor
+
 // Load and render a specific page of the PDF
 function showPage(page_no) {
     __PAGE_RENDERING_IN_PROGRESS = 1;
@@ -58,8 +60,13 @@ function showPage(page_no) {
         // not needed?
         var scale_required = __PDF_CANVAS.width / page.getViewport(1).width;
 
+        let pdfCanvasWidth = $('#pdf-canvas').width();
+        scaleFactor = pdfCanvasWidth / 500;
+        console.log(pdfCanvasWidth)
+        console.log(scaleFactor)
+
         // Get viewport of the page at required scale
-        var viewport = page.getViewport(3);
+        var viewport = page.getViewport(pdfCanvasWidth/page.getViewport(1).width);
         // Set canvas height
         __PDF_CANVAS.width = viewport.width;
         __CANVAS.width = viewport.width;
@@ -199,8 +206,8 @@ $("#hide-annotation-layer").on('click',function(){
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
     return {
-        x: evt.clientX - rect.left,
-        y: evt.clientY - rect.top
+        x: (evt.clientX - rect.left)/scaleFactor,
+        y: (evt.clientY - rect.top)/scaleFactor
     };
 }
 
@@ -213,7 +220,7 @@ function drawAnnotationLayer(page_no) {
                 var centerX = annotations[String(a)].x_coords;
                 var centerY = annotations[String(a)].y_coords;
                 var rect = __CANVAS.getBoundingClientRect();
-                var scaleFactor = 2.192;
+                // var scaleFactor = 2.192;
 
                 __CANVAS_CTX.beginPath();
                 __CANVAS_CTX.arc(centerX*scaleFactor, centerY*scaleFactor, 12, 0, 2 * Math.PI, false);
