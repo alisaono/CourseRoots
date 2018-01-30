@@ -157,6 +157,92 @@
         </div>
       </div>
 
+      <!-- Note upload modal -->
+      <div class="modal fade" id="note-modal" tabindex="-1" role="dialog" aria-labelledby="note-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="note-modal-label">Edit Your Note</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input id="edit-note-id" type="hidden" name="noteID" />
+              <div class="form-group">
+                <label for="new-title-input" class="control-label">Subject Title:</label>
+                <input type="text" id="new-title-input" class="form-control" name="title">
+              </div>
+              <div class="form-inline" id="new-subject-input">
+                <label for="new-subject-input" class="control-label">Subject Number:</label>
+                <select id="new-dept-input" class="form-control" name="dept">
+                  <option value="1">1.</option>
+                  <option value="2">2.</option>
+                  <option value="3">3.</option>
+                  <option value="4">4.</option>
+                  <option value="5">5.</option>
+                  <option value="6">6.</option>
+                  <option value="7">7.</option>
+                  <option value="8">8.</option>
+                  <option value="9">9.</option>
+                  <option value="10">10.</option>
+                  <option value="11">11.</option>
+                  <option value="12">12.</option>
+                  <option value="14">14.</option>
+                  <option value="15">15.</option>
+                  <option value="16">16.</option>
+                  <option value="17">17.</option>
+                  <option value="18">18.</option>
+                  <option value="20">20.</option>
+                  <option value="21">21.</option>
+                  <option value="21A">21A.</oprion>
+                  <option value="21G">21G.</oprion>
+                  <option value="21H">21H.</oprion>
+                  <option value="21L">21L.</oprion>
+                  <option value="21M">21M.</oprion>
+                  <option value="21W">21W.</option>
+                  <option value="CMS">CMS.</option>
+                  <option value="22">22.</option>
+                  <option value="24">24.</option>
+                  <option value="HST">HST.</option>
+                  <option value="IDS">IDS.</option>
+                  <option value="MAS">MAS.</option>
+                  <option value="STS">STS.</option>
+                </select>
+                <input type="text" id="new-number-input" class="form-control" name="number">
+              </div>
+              <div class="form-inline">
+                <label for="new-year-input" class="control-label">Year:</label>
+                <input type="text" id="new-year-input" class="form-control" name="year" maxlength="4">
+                <label for="new-term-input" class="control-label">Term:</label>
+                <select id="new-term-input" class="form-control" name="term">
+                    <option value="Fall">Fall</option>
+                    <option value="IAP">IAP</option>
+                    <option value="Spring">Spring</option>
+                </select>
+              </div>
+              <div class="form-inline">
+                <label for="new-lec-input" class="control-label">Lecture Number:</label>
+                <input type="text" id="new-lec-input" class="form-control" name="lec" placeholder="if applicable" maxlength="3">
+              </div>
+              <div class="form-group" id="new-instructors-input">
+                <label for="new-instructors-input" class="control-label">Instructor(s):</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" name="instructor">
+                </div>
+                <div class="input-group add-row">
+                  <button type="btn" class="btn btn-primary">Add Another Instructor</button>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button id="edit-note-btn" type="button" class="btn btn-primary">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="prof-row" class="row">
         <div class="col-lg-3 col-md-3 col-sm-3">
           <img id="prof-img" src="/images/sprout.png">

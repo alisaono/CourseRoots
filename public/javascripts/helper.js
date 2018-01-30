@@ -14,18 +14,18 @@ $("#search-btn").on('click', function(e) {
   }
 })
 
-function updateNotes(rowID,notes,notesHidden,thisUserID) {
+function updateNotes(rowID,notes,notesHidden,thisUserID,canEdit) {
   $(rowID).empty()
   for (let i = 0; i < notes.length; i++) {
     let note = notes[i]
-    addNoteToRow(note,rowID,thisUserID)
+    addNoteToRow(note,rowID,thisUserID,canEdit)
     if (notesHidden !== null && notesHidden.has(note.id)) {
       $("#"+note.id).hide()
     }
   }
 }
 
-function addNoteToRow(note,rowID,thisUserID) {
+function addNoteToRow(note,rowID,thisUserID,canEdit) {
   let uploadTime = stringifyTime(note.upload_time)
   let instructors = ""
   for (let person of note.instructors) {
@@ -83,6 +83,53 @@ function addNoteToRow(note,rowID,thisUserID) {
       })
     }
   })
+
+  if (canEdit) {
+    let $editIcon = $("<img class='edit-icon' src='/images/edit-pencil-light.png'>")
+    $editIcon.on('click', function() {
+      $("#edit-note-id").val(note.id)
+      $("#new-title-input").prop('placeholder',note.title)
+      $("#new-title-input").val(note.title)
+
+      let regex = note.number.match('^[A-Z0-9]+\\.([A-Z0-9]+)$')
+      $("#new-dept-input").val(note.dept)
+      $("#new-dept-input").prop('disabled',true)
+      $("#new-number-input").val(regex[1])
+      $("#new-number-input").prop('disabled',true)
+
+      $("#new-year-input").prop('placeholder',note.year)
+      $("#new-year-input").val(note.year)
+      $("#new-term-input").val(note.term)
+      if (note.lec >= 0) {
+        $("#new-lec-input").prop('placeholder',note.lec)
+        $("#new-lec-input").val(note.lec)
+      }
+
+      $("#new-instructors-input input").prop('placeholder',note.instructors[0])
+      $("#new-instructors-input input").val(note.instructors[0])
+      for (let i = 1; i < note.instructors.length; i++) {
+        let $group = $("<div class='input-group new-row'></div>")
+        let $input = $("<input type='text' class='form-control' name='instructor'>")
+        let $span = $("<span class='input-group-btn'></span>")
+        $input.prop('placeholder',note.instructors[i])
+        $input.val(note.instructors[i])
+
+        let $btn = $("<button type='btn' class='btn btn-default remove-row'>x</button>")
+        $btn.on('click', function() {
+          $group.remove()
+        })
+
+        $span.append($btn)
+        $group.append($input)
+        $group.append($span)
+        $("#new-instructors-input .add-row").before($group)
+      }
+
+      $("#note-modal").modal()
+    })
+
+    $cardTitle.append($editIcon)
+  }
 
   $cardTitle.append("<a target='_blank' href=/notes/" + note.dept + "/" + note.id + "/" + note.pdfID + ">"
     + note.number + "</a>")

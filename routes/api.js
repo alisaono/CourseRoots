@@ -267,6 +267,32 @@ router.post('/upload', function(req, res, next) {
   });
 })
 
+/* POST add user favorite */
+router.post('/edit/notes/:dept/:id', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
+  let edits = JSON.parse(req.body.edits);
+  let deptID = req.params.dept;
+  let noteID = req.params.id;
+  let userID = req.user.mit_id;
+
+  let noteRef = database.ref(`/note_by_dept/${deptID}/${noteID}`);
+  noteRef.once("value").then(function(snapshot) {
+    if (snapshot.val().authorID === userID) {
+      noteRef.update(edits, function(error) {
+        let message = error ? error : "";
+        res.send(message);
+      })
+    } else {
+      res.render('error',{ message : "Error 401 - Unauthorized" });
+    }
+  })
+})
+
+
 router.post('/annotate', function(req, res, next) {
   if (!req.isAuthenticated()) {
     res.render('error',{ message : "Error 401 - Unauthorized" });
