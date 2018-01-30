@@ -79,7 +79,7 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
 
-<body>
+<body style="overflow-y: visible">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
@@ -130,13 +130,12 @@
 		    <div class="col-sm-9" id="pdf-contents">
 		    	<div id="pdf-loader">Loading document ...</div>
 		        <canvas id="pdf-canvas"
-			    	style="position: absolute; width: 95%; z-index: 0;"></canvas>
+			    	style="position: absolute; width: 500px; z-index: 0;"></canvas>
 				<canvas id="annotation-layer"
-				    style="position: absolute; width: 95%; z-index: 1;"></canvas>
+				    style="position: absolute; width: 500px; z-index: 1;"></canvas>
 				<div id="page-loader">Loading page ...</div>
 		    </div>
-			<div class="col-sm-3" id="comment-bar" style="z-index: 2; height: 100%">
-				<div style="background-color: #c3c3c3; margin-bottom: 5px; padding: 5px"><h3>hfes;alfe</h3><p>jkdl</p></div>
+			<div class="col-sm-3" id="comment-bar" style="z-index: 2; height: 100%; overflow-y: scroll">
 			</div>
 		</div>
 	</div>

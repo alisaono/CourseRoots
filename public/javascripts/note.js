@@ -110,18 +110,20 @@ function showPage(page_no) {
                     if(annotations[String(a)] !== null && annotations[String(a)].page == __CURRENT_PAGE) {
                         var content = annotations[String(a)].content;
                         var user = annotations[String(a)].user;
-                        $("#comment-bar").append("<div id='" + String(a) + "' style='background-color: #c3c3c3; margin-bottom: 5px; padding: 5px'><h3>" 
+                        $("#comment-bar").append("<div id='" + String(a) + "' style='color: white; background-color: #a3d852; margin-bottom: 5px; padding: 5px'><h3>" 
                             + user + "</h3><p>" + content + "</p></div>");
+                        __ANNOTATIONS.push({id: String(a), x: annotations[String(a)].x_coords, y: annotations[String(a)].y_coords});
                     }
                 }
             });
+/*
             for (a in __ANNOTATIONS) {
-                __CANVAS.addEventListener('hover', (e) => {
+                __CANVAS.addEventListener('click', (e) => {
                     const pos = {
                         x: e.clientX - rect.left,
                         y: e.clientY - rect.top
                     };
-
+                    console.log(pos);
                     const circle = {
                         x: __ANNOTATIONS[String(a)].x_coords,
                         y: __ANNOTATIONS[String(a)].y_coords,
@@ -132,7 +134,7 @@ function showPage(page_no) {
                         alert('click on circle: ');
                     }  
                 });
-            }
+            }*/
         });
     });
 }
@@ -154,15 +156,42 @@ document.getElementById("pdf-current-page").addEventListener("input", function(e
     showPage(Number(this.value));
 });
 
+var highlighted_annotation_id;
+
 // Click to add annotation (potentially prevent overlapping pins?)
 $("#annotation-layer").on('click', function(evt) {
     annotation_coords = getMousePos(__CANVAS, evt);
+    console.log(annotation_coords);
     annotation_page = __CURRENT_PAGE;
-    var content = prompt('Please enter your annotation: ');
-    if (content == null || content == "") {
-        alert('Cancelled');
+    var overlap = false;
+
+    if (!(highlighted_annotation_id == null)) {
+        document.getElementById(highlighted_annotation_id).style.backgroundColor = "#a3d852";
+    }
+
+    for (a in __ANNOTATIONS) {
+        const circle = {
+            x: __ANNOTATIONS[a]["x"],
+            y: __ANNOTATIONS[a]["y"],
+            radius: 10
+        };
+
+        if (isIntersect(annotation_coords, circle)) {
+            overlap = true;
+            highlighted_annotation_id = __ANNOTATIONS[a]["id"];
+            break;
+        }
+    }
+
+    if (overlap == false) {
+        var content = prompt('Please enter your annotation: ');
+        if (content == null || content == "") {
+            alert('Cancelled');
+        } else {
+            addAnnotation(annotation_coords["x"], annotation_coords["y"], annotation_page, content);
+        }
     } else {
-        addAnnotation(annotation_coords["x"], annotation_coords["y"], annotation_page, content);
+        document.getElementById(highlighted_annotation_id).style.backgroundColor = "#5cb85c";
     }
 });
 
@@ -180,13 +209,20 @@ $('#annotation-layer-checkbox').change(function(){
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
     return {
-      x: evt.clientX - rect.left,
-      y: evt.clientY - rect.top
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
     };
 }
 
-// draw annotation pins on layer
-function drawAnnotationLayer(page_no) {
+/* Scale factor?
+function drawAnnotationLayer(page_no){
+    var scaleFactor= __CANVAS.getBoundingClientRect().width / __CANVAS.offsetWidth;
+
+    __CANVAS_CTX.clearRect(0, 0, __CANVAS_CTX.width, __CANVAS_CTX.height);
+
+    __CANVAS_CTX.save();
+    __CANVAS_CTX.scale(scaleFactor,scaleFactor);
+
     $.getJSON("/api/notes/" + deptID + "/" + noteID,function(data){
         let annotations = data.annotations;
         for (a in annotations) {
@@ -197,6 +233,33 @@ function drawAnnotationLayer(page_no) {
 
                 __CANVAS_CTX.beginPath();
                 __CANVAS_CTX.arc(centerX, centerY, 10, 0, 2 * Math.PI, false);
+                __CANVAS_CTX.fillStyle = 'green';
+                __CANVAS_CTX.fill();
+                __CANVAS_CTX.lineWidth = 5;
+                __CANVAS_CTX.strokeStyle = '#003300';
+                __CANVAS_CTX.stroke();
+
+            }
+        }
+    });
+
+    __CANVAS_CTX.restore();
+}*/
+
+
+// draw annotation pins on layer
+function drawAnnotationLayer(page_no) {
+    $.getJSON("/api/notes/" + deptID + "/" + noteID,function(data){
+        let annotations = data.annotations;
+        for (a in annotations) {
+            if(annotations[String(a)] !== null && annotations[String(a)].page == __CURRENT_PAGE) {
+                var centerX = annotations[String(a)].x_coords;
+                var centerY = annotations[String(a)].y_coords;
+                var rect = __CANVAS.getBoundingClientRect();
+                var scaleFactor = 2.192;
+
+                __CANVAS_CTX.beginPath();
+                __CANVAS_CTX.arc(centerX*scaleFactor, centerY*scaleFactor, 10, 0, 2 * Math.PI, false);
                 __CANVAS_CTX.fillStyle = 'green';
                 __CANVAS_CTX.fill();
                 __CANVAS_CTX.lineWidth = 5;
