@@ -48,32 +48,33 @@
     </nav>
 
     <div class="container">
+      <div class="row">
+    		<div class="col-lg-9" id="pdf-main-container">
+          <div id="pdf-contents">
+            <div id="pdf-loader">Loading document ...</div>
+            <canvas id="pdf-canvas" class="fade-in"
+            style="position: absolute; width: 500px; z-index: 0;"></canvas>
+            <canvas id="annotation-layer" class="fade-in"
+            style="position: absolute; width: 500px; z-index: 1;"></canvas>
+            <div id="page-loader">Loading page ...</div>
+          </div>
+    		</div>
+        <div class="col-lg-3" id="comment-bar" style=""></div>
+      </div>
       <div class="row" id="pdf-meta">
-        <button type="button" id="pdf-prev" class="btn btn-secondary col-lg-2">Previous</button>
-        <div class="form-inline col-lg-2" id="page-count-container">
+        <button type="button" id="pdf-prev" class="btn btn-secondary col-lg-3">Previous</button>
+        <div class="form-inline col-lg-3" id="page-count-container">
           Page <input type="text" id="pdf-current-page"> of <span id="pdf-total-pages"></span>
         </div>
-        <button type="button" id="pdf-next" class="btn btn-secondary col-lg-2">Next</button>
-        <button id="hide-annotation-layer" type="button" class="btn btn-primary col-lg-2">Hide Pins</button>
-        <button id="show-annotation-layer" type="button" class="btn btn-primary col-lg-2">Show Pins</button>
-        <div class="col-sm-2">
+        <button type="button" id="pdf-next" class="btn btn-secondary col-lg-3">Next</button>
+        <button id="hide-annotation-layer" type="button" class="btn btn-primary col-lg-3">Hide Pins</button>
+        <button id="show-annotation-layer" type="button" class="btn btn-primary col-lg-3">Show Pins</button>
+        <div>
         <!-- <a href="#" title="annotation-information" data-toggle="popover" data-trigger="hover" data-content="Show Annotation Layer (You must have this enabled to add annotations)">
         <span class="glyphicon glyphicon-info-sign"></span>
         </a> -->
         </div>
       </div>
-  		<div class="row" id="pdf-main-container">
-        <div class="col-lg-9" id="pdf-contents">
-          <div id="pdf-loader">Loading document ...</div>
-          <canvas id="pdf-canvas" class="fade-in"
-          style="position: absolute; width: 500px; z-index: 0;"></canvas>
-          <canvas id="annotation-layer" class="fade-in"
-          style="position: absolute; width: 500px; z-index: 1;"></canvas>
-          <div id="page-loader">Loading page ...</div>
-        </div>
-  			<div class="col-lg-3" id="comment-bar" style="">
-  			</div>
-  		</div>
     </div>
 
     <!-- Footer -->
