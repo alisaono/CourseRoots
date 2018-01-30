@@ -267,7 +267,7 @@ router.post('/upload', function(req, res, next) {
   });
 })
 
-/* POST add user favorite */
+/* POST edits to note's information. */
 router.post('/edit/notes/:dept/:id', function(req, res, next) {
   if (!req.isAuthenticated()) {
     res.render('error',{ message : "Error 401 - Unauthorized" });
@@ -292,6 +292,44 @@ router.post('/edit/notes/:dept/:id', function(req, res, next) {
   })
 })
 
+/* POST delete note. */
+router.post('/delete', function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    res.render('error',{ message : "Error 401 - Unauthorized" });
+    return;
+  }
+
+  let deptID = req.body.dept;
+  let noteID = req.body.noteID;
+  let userID = req.user.mit_id;
+
+  let noteRef = database.ref(`/note_by_dept/${deptID}/${noteID}`);
+  noteRef.once("value").then(function(snapshot) {
+    if (snapshot.val().authorID === userID) {
+      let fileKey = snapshot.val().pdfID
+      let updates = {}
+      updates['/users/'+userID+'/uploads/'+noteID] = null
+      updates['/note_by_dept/'+deptID+'/'+noteID] = null
+
+      database.ref().update(updates, function(error) {
+        if (error) {
+          res.send(error);
+        } else {
+          let params = {
+            Bucket: S3_BUCKET,
+            Key: fileKey,
+          }
+          s3.deleteObject(params, function(err, data) {
+            if (err) console.log(err, err.stack);
+          })
+          res.send("");
+        }
+      })
+    } else {
+      res.render('error',{ message : "Error 401 - Unauthorized" });
+    }
+  })
+})
 
 router.post('/annotate', function(req, res, next) {
   if (!req.isAuthenticated()) {

@@ -149,6 +149,26 @@ $(document).ready(function(){
     })
   })
 
+  $("#delete-note-btn").on('click', function() {
+    const deleteMsg = "Are you sure you want to delete this note? You can't restore it once deleted!"
+    if (confirm(deleteMsg)) {
+      let deletedNote = {
+        dept: $("#new-dept-input").val(),
+        noteID: $("#edit-note-id").val(),
+      }
+      $.ajax({
+        url: '/api/delete',
+        method: 'POST',
+        data: deletedNote,
+      }).done(function(response){
+        if (response !== "") {
+          alert("Error occurred :( Try again...")
+        }
+        location.reload()
+      })
+    }
+  })
+
   $("#note-modal").on('hidden.bs.modal', function (e) {
     $("#note-modal input[type='text']").val('')
     $("#new-instructors-input .new-row").remove()
