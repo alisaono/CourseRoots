@@ -347,6 +347,7 @@ router.post('/annotate', function(req, res, next) {
   newValues['content'] = req.body.content;
   newValues['page'] = req.body.page;
   newValues['user'] = req.user.kerbero;
+	newValues['userID'] = req.user.mit_id;
   newValues['x_coords'] = req.body.x_coords;
   newValues['y_coords'] = req.body.y_coords;
 

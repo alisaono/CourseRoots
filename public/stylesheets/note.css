@@ -31,6 +31,12 @@
   display: none;
 }
 
+#comment-bar-wrapper h4 {
+  margin: 20px 10px 0 10px;
+  text-align: center;
+  color: #62a300;
+}
+
 #comment-bar {
   z-index: 2;
   height: 100%;

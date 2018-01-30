@@ -98,8 +98,9 @@ function showPage(page_no) {
                 for (let a in annotations) {
                     if(annotations[String(a)] !== null && annotations[String(a)].page == __CURRENT_PAGE) {
                         var content = annotations[String(a)].content;
-                        var user = annotations[String(a)].user;
-                        addComment(String(a), user, (user === username), content);
+                        var a_user = annotations[String(a)].user;
+                        var a_userID = annotations[String(a)].userID;
+                        addComment(String(a), a_user, (a_user === username), a_userID, content);
                         __ANNOTATIONS.push({id: String(a), x: annotations[String(a)].x_coords, y: annotations[String(a)].y_coords});
                     }
                 }
@@ -148,7 +149,7 @@ var highlighted_annotation_id;
 // Click to add annotation (potentially prevent overlapping pins?)
 $("#annotation-layer").on('click', function(evt) {
     annotation_coords = getMousePos(__CANVAS, evt);
-    console.log(annotation_coords);
+    // console.log(annotation_coords);
     annotation_page = __CURRENT_PAGE;
     var overlap = false;
 
@@ -310,8 +311,8 @@ function isIntersect(point, circle) {
   return Math.sqrt((point.x - circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.radius;
 }
 
-function addComment(id,user,isSelf,content) {
-  let $comment = $(`<div id='${id}' class='fade-in comment-item'><h5>${user}</h5><p>${content}</p></div>`)
+function addComment(id,user,isSelf,userID,content) {
+  let $comment = $(`<div id='${id}' class='fade-in comment-item'><a href='/users/${userID}'><h5>${user}</h5></a><p>${content}</p></div>`)
   if (isSelf) {
     let $deleteIcon = $("<span class='delete'>&times</span>")
     $deleteIcon.on('click', function() { deleteAnnotation(id) })
