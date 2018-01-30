@@ -7,6 +7,8 @@ var __PDF_DOC,
     __CANVAS = $('#annotation-layer').get(0),
     __CANVAS_CTX = __CANVAS.getContext('2d');
 
+const pdfPadding = 20;
+
 PDFJS.disableworker = true;
 // URL of PDF document
 var url = "https://s3.amazonaws.com/sinusoidalsuite-courseroots/" + pdfID;
@@ -20,7 +22,7 @@ function showPDF(pdf_url) {
     PDFJS.getDocument({ url: pdf_url }).then(function(pdf_doc) {
         __PDF_DOC = pdf_doc;
         __TOTAL_PAGES = __PDF_DOC.numPages;
-        
+
         // Hide the pdf loader and show pdf container in HTML
         $("#pdf-loader").hide();
         $("#pdf-contents").show();
@@ -68,7 +70,7 @@ function showPage(page_no) {
             canvasContext: __PDF_CANVAS.getContext('2d'),
             viewport: viewport
         };
-        
+
         // Render the page contents in the canvas
         page.render(renderContext).then(function() {
             __PAGE_RENDERING_IN_PROGRESS = 0;
@@ -85,6 +87,8 @@ function showPage(page_no) {
             // Show the canvas and hide the page loader
             $("#pdf-canvas").show();
             $("#page-loader").hide();
+            let pdfHeight = $("#pdf-canvas").height()
+            $("#pdf-main-container").css('height',pdfHeight + pdfPadding)
 
             drawAnnotationLayer(page_no);
             var rect = __CANVAS.getBoundingClientRect();
@@ -97,15 +101,7 @@ function showPage(page_no) {
                     if(annotations[String(a)] !== null && annotations[String(a)].page == __CURRENT_PAGE) {
                         var content = annotations[String(a)].content;
                         var user = annotations[String(a)].user;
-                        if (user == username) {
-                            var funcName = "deleteAnnotation('" + String(a) + "')";
-                            $("#comment-bar").append("<div id='" + String(a) + "' class='fade-in' style='color: white; background-color: #a3d852; border-radius:10px; margin-bottom: 5px; padding: 10px'><h3>" 
-                                + user + "</h3><p>" + content + "</p>"
-                                + "<button id='delete' onclick=" + funcName + ">Delete</button></div>");                            
-                        } else {
-                            $("#comment-bar").append("<div id='" + String(a) + "' class='fade-in' style='color: white; background-color: #a3d852; border-radius:10px; margin-bottom: 5px; padding: 10px'><h3>" 
-                                + user + "</h3><p>" + content + "</p></div>");
-                        }
+                        addComment(String(a), user, (user === username), content);
                         __ANNOTATIONS.push({id: String(a), x: annotations[String(a)].x_coords, y: annotations[String(a)].y_coords});
                     }
                 }
@@ -155,8 +151,8 @@ $("#annotation-layer").on('click', function(evt) {
     annotation_page = __CURRENT_PAGE;
     var overlap = false;
 
-    if (!(highlighted_annotation_id == null)) {
-        document.getElementById(highlighted_annotation_id).style.backgroundColor = "#a3d852";
+    if (highlighted_annotation_id) {
+      $(`#${highlighted_annotation_id}`).removeClass('active');
     }
 
     for (a in __ANNOTATIONS) {
@@ -176,25 +172,29 @@ $("#annotation-layer").on('click', function(evt) {
     if (overlap == false) {
         var content = prompt('Please enter your annotation: ');
         if (content == null || content == "") {
-            alert('Cancelled');
+            // alert('Cancelled');
         } else {
             addAnnotation(annotation_coords["x"], annotation_coords["y"], annotation_page, content);
         }
     } else {
-        document.getElementById(highlighted_annotation_id).style.backgroundColor = "#5cb85c";
+      $(`#${highlighted_annotation_id}`).addClass('active');
+      $("#comment-bar").animate({
+        scrollTop: $(`#${highlighted_annotation_id}`).position().top
+      }, 1000, 'swing')
     }
 });
 
-// Toggle annotation layer on/off
-$('#annotation-layer-checkbox').change(function(){
-    if($(this).is(':checked')) {
-        $("#annotation-layer").show();
-        $("#comment-bar").show();
-    } else {
-        $("#annotation-layer").hide();
-        $("#comment-bar").hide();
-    }
-});
+$("#show-annotation-layer").on('click',function(){
+  $(this).hide()
+  $("#annotation-layer").show()
+  $("#hide-annotation-layer").show()
+})
+
+$("#hide-annotation-layer").on('click',function(){
+  $(this).hide()
+  $("#annotation-layer").hide()
+  $("#show-annotation-layer").show()
+})
 
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
@@ -216,11 +216,11 @@ function drawAnnotationLayer(page_no) {
                 var scaleFactor = 2.192;
 
                 __CANVAS_CTX.beginPath();
-                __CANVAS_CTX.arc(centerX*scaleFactor, centerY*scaleFactor, 10, 0, 2 * Math.PI, false);
-                __CANVAS_CTX.fillStyle = 'green';
+                __CANVAS_CTX.arc(centerX*scaleFactor, centerY*scaleFactor, 12, 0, 2 * Math.PI, false);
+                __CANVAS_CTX.fillStyle = '#5cb85c';
                 __CANVAS_CTX.fill();
-                __CANVAS_CTX.lineWidth = 5;
-                __CANVAS_CTX.strokeStyle = '#003300';
+                __CANVAS_CTX.lineWidth = 3;
+                __CANVAS_CTX.strokeStyle = '#4cae4c';
                 __CANVAS_CTX.stroke();
 
             }
@@ -245,10 +245,9 @@ function addAnnotation(x_coord, y_coord, page, content) {
         method: 'POST',
         data: new_annotation,
     }).done(function(response){
-        if (response === "") {
-            alert("Annotation added :)")
-        } else {
-            alert("Error occurred :( Try again...")
+        if (response !== "") {
+          alert("Error occurred :( Try again...")
+          location.reload()
         }
     })
     showPage(__CURRENT_PAGE);
@@ -267,16 +266,20 @@ function editAnnotation(id) {
         method: 'POST',
         data: edit_annotation,
     }).done(function(response){
-        if (response === "") {
-            alert("Annotation edited :)")
-        } else {
-            alert("Error occurred :( Try again...")
+        if (response !== "") {
+          alert("Error occurred :( Try again...")
+          location.reload()
         }
     })
     showPage(__CURRENT_PAGE);
 }
 
 function deleteAnnotation(id) {
+    const deleteMsg = "Are you sure you want to delete this comment? You can't restore it once deleted!"
+    if (!confirm(deleteMsg)) {
+      return
+    }
+
     let deleted_annotation = {
         annotationID: id,
         deptID: deptID,
@@ -288,10 +291,9 @@ function deleteAnnotation(id) {
         method: 'POST',
         data: deleted_annotation,
     }).done(function(response){
-        if (response === "") {
-            alert("Annotation deleted")
-        } else {
-            alert("Error occurred :( Try again...")
+        if (response !== "") {
+          alert("Error occurred :( Try again...")
+          location.reload()
         }
     })
     showPage(__CURRENT_PAGE);
@@ -299,4 +301,14 @@ function deleteAnnotation(id) {
 
 function isIntersect(point, circle) {
   return Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.radius;
+}
+
+function addComment(id,user,isSelf,content) {
+  let $comment = $(`<div id='${id}' class='fade-in comment-item'><h5>${user}</h5><p>${content}</p></div>`)
+  if (isSelf) {
+    let $deleteIcon = $("<span class='delete'>&times</span>")
+    $deleteIcon.on('click', function() { deleteAnnotation(id) })
+    $comment.children('h5').append($deleteIcon)
+  }
+  $("#comment-bar").append($comment)
 }

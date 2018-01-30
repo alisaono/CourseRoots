@@ -1,58 +1,28 @@
-/* The switch - the box around the slider */
-.switch {
-  position: relative;
-  display: block;
-  width: 30px;
-  height: 17px;
+#pdf-meta {
+  padding: 20px 0;
 }
 
-/* Hide default HTML checkbox */
-.switch input {display:none;}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+#page-count-container {
+  justify-content: center;
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 13px;
-  width: 13px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+#page-count-container input {
+  width: 50px;
 }
 
-input:checked + .slider {
-  background-color: #2196F3;
+#page-count-container input, span {
+  margin: 5px;
 }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+#show-annotation-layer {
+  display: none;
 }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(13px);
-  -ms-transform: translateX(13px);
-  transform: translateX(13px);
-}
-.slider.round {
-  border-radius: 17px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
+#comment-bar {
+  z-index: 2;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 10px;
 }
 
 .material-icons{
@@ -81,4 +51,27 @@ input:checked + .slider:before {
   -moz-transition: background-color 0.25s ease-out;
   -o-transition: background-color 0.25s ease-out;
   transition: background-color 0.25s ease-out;
+}
+
+.comment-item {
+  color: #212529;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+  margin: 10px;
+  padding: 20px;
+}
+
+.comment-item p {
+  margin: 0;
+}
+
+.comment-item.active {
+  background-color: #a3d852;
+}
+
+.comment-item .delete {
+  float: right;
+  margin: 0;
+  color: #545b62;
+  cursor: pointer;
 }
