@@ -14,8 +14,31 @@ nav {
   z-index: 1000;
 }
 
+.navbar {
+      margin-bottom: 0;
+      background-color: #a3d852;
+      z-index: 9999;
+      border: 0;
+      font-size: 12px !important;
+      line-height: 1.42857143 !important;
+      letter-spacing: 4px;
+      border-radius: 0;
+      font-family: Montserrat, sans-serif;
+}
+
 .nav-link img {
   height: 22px;
+}
+
+.logo{
+    height: 50px;
+    width: 50px;
+    padding: 5px;
+    margin:0px;
+    vertical-align: top;
+}
+.bg-green{
+  background-color: #a3d852
 }
 
 /* Search options */
@@ -112,6 +135,7 @@ h2 {
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+  color: #62a300;
 }
 
 h2 > a {
@@ -152,7 +176,7 @@ h2 > a {
 .no-notes {
   margin-left: 18px;
   margin-right: 18px;
-  color: #EF4836;
+  color: #8e8e8e;
 }
 
 @media (max-width: 991.98px) { /* Small devices like tablets etc */

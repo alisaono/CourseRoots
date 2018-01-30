@@ -1,3 +1,31 @@
+.navbar {
+      margin-bottom: 0;
+      background-color: #a3d852;
+      z-index: 9999;
+      border: 0;
+      font-size: 12px !important;
+      line-height: 1.42857143 !important;
+      letter-spacing: 4px;
+      border-radius: 0;
+      font-family: Montserrat, sans-serif;
+}
+
+.nav-link img {
+  height: 22px;
+}
+
+
+.logo{
+    height: 50px;
+    width: 50px;
+    padding: 5px;
+    margin:0px;
+    vertical-align: top;
+}
+.bg-green{
+  background-color: #a3d852
+}
+
 .sidebar-nav {
   padding: 20px 20px 74px 20px;
 }

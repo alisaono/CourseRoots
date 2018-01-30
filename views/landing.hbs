@@ -13,6 +13,12 @@
       line-height: 1.8;
       color: #818181;
   }
+  h1{
+    font-size: 48px;
+    line-height: 1.375em;
+    color: 303030;
+    margin-bottom: 15px;
+  }
   h2 {
       font-size: 24px;
       text-transform: uppercase;
@@ -30,26 +36,36 @@
   .jumbotron {
       background-color: #a3d852;
       color: #fff;
-      padding: 100px 25px;
+      padding: 275px 25px;
       font-family: Montserrat, sans-serif;
+  }
+  .bg-green{
+    background-color: #a3d852
   }
   .bg-grey {
       background-color: #f6f6f6;
   }
+  .bg-rootbook{
+    background-image: url("images/rootbook.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-color: #a3d852;
+
+  }
   .container-fluid {
-      padding: 60px 50px;
+      padding: 30px 50px;
   }
   .carousel-control.right, .carousel-control.left {
     background-image: none;
-    color: #a3d852;
+    color: #ffffff;
   }
 
   .carousel-indicators li {
-    border-color: #a3d852;
+    border-color: #ffffff;
   }
 
   .carousel-indicators li.active {
-    background-color: #a3d852;
+    background-color: #ffffff;
   }
 
   .item h4 {
@@ -63,7 +79,13 @@
   .item span {
     font-style: normal;
   }
-
+  .logo{
+    height: 50px;
+    width: 50px;
+    padding: 5px;
+    margin:0px;
+    vertical-align: top;
+  }
   .navbar {
       margin-bottom: 0;
       background-color: #a3d852;
@@ -86,8 +108,22 @@
       border-color: transparent;
       color: #fff !important;
   }
-  footer .glyphicon {
+  .process{
+    border: 10px solid transparent;
+    margin-bottom: 25px;
+    width: 80%;
+    height: 80%;
+  }
+  .process:hover {
+    border-color: #f1f1f1;
+  }
+  .glyphicon {
       font-size: 20px;
+      margin-bottom: 20px;
+      color: #303030;
+  }
+  footer .glyphicon {
+      font-size: 40px;
       margin-bottom: 20px;
       color: #a3d852;
   }
@@ -103,13 +139,9 @@
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
+    <button class="navbar-brand btn logo" style="background: url(images/icon.png) center no-repeat; background-size: 100% 100%;" href="#myPage"></button>
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#myPage">CourseRoots</a>
+      <a class="navbar-brand" style="margin-left: 2px" href="#myPage">CourseRoots</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
@@ -122,23 +154,41 @@
   </div>
 </nav>
 
-<div class="jumbotron text-center">
+<div class="jumbotron bg-rootbook text-center">
   <h1>CourseRoots</h1>
   <p>The world's first crowdsourcing lecture notes annotation tool, for MIT students.</p>
   <form class="form-inline">
     <div class="input-group">
-      <a href="/auth/mitopenid"><button type="button" class="btn btn-success">Sign Up</button></a>
+      <a href="/auth/mitopenid"><button type="button" class="btn btn-success">Join Today!</button></a>
     </div>
   </form>
+  <a href="#about" title="Learn more about us!">
+    <span class="glyphicon glyphicon-chevron-down" style="padding-top: 700px;position: absolute; color: #ffffff; font-size: 40px;"></span>
+  </a>
 </div>
 
 <!-- Container (About Section) -->
 <div id="about" class="container-fluid">
   <h2>How Does It Work?</h2>
-  <h4>Lorem ipsum..</h4>
-  <p>Lorem ipsum..</p>
-  <button class="btn btn-default btn-lg">Get in Touch</button>
+  <h4>CourseRoots is a collaborative lecture notes annotation tool. Students come here to study lecture notes, share insights and accumulate their knowledge and understanding about the materials. They also have the option to upload their own notes to ensure all information is up to date. Currently, it's only open to MIT students for copyright reason, but we hope to share this tool with students around the world.</h4>
+  <br>
+  <div class="row text-center">
+    <div class="col-sm-4">
+      <img src="images/step1.png" class="img-square process" width="255" height="255">
+      <p class="text-center"><strong>Step1: Log in with your MIT email or certificate.</strong></p>
+    </div>
+    <div class="col-sm-4">
+      <img src="images/step2.png" class="img-square process" width="255" height="255">
+      <p class="text-center"><strong>Step2: Search through hundreds of lecture notes in our library and find the one you want to study.</strong></p>
+    </div>
+    <div class="col-sm-4">
+      <img src="images/placeholder.png" class="img-square process" width="255" height="255">
+      <p class="text-center"><strong>Step3: Learn from previous students' comments and add your own insights about the material.</strong></p>
+    </div>
+  </div>
+</div>    
 
+<div class="container-fluid bg-green">
   <h2>Hear from our peers experiences</h2>
   <div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
     <!-- Indicators -->
@@ -180,7 +230,7 @@
       <p>Questions? Feedbacks and suggestions about this website? Let us know!</p>
       <p><span class="glyphicon glyphicon-map-marker"></span> Cambridge, MA</p>
       <p><span class="glyphicon glyphicon-phone"></span> +01 1234567890</p>
-      <p><span class="glyphicon glyphicon-envelope"></span> sinusoidalsuite@mit.com</p>
+      <p><span class="glyphicon glyphicon-envelope"></span> sin.suite@gmail.com</p>
     </div>
     <div class="col-sm-7">
       <div class="row">
@@ -205,7 +255,8 @@
   <a href="#myPage" title="To Top">
     <span class="glyphicon glyphicon-chevron-up"></span>
   </a>
-  <p>Made with love by Sinusoidal Suite</a></p>
+  <p>Copyright &copy; CourseRoots 2018</p>
+  <p>Made with &hearts; by Sinusoidal Suite</a></p>
 </footer>
 
 <script>
