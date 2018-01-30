@@ -1,9 +1,10 @@
 #pdf-meta {
-  padding-bottom: 20px;
+  padding: 20px 0;
 }
 
 #pdf-main-container {
   padding-top: 20px;
+  margin-top: 20px;
 }
 
 #page-count-container {

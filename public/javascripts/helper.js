@@ -131,7 +131,7 @@ function addNoteToRow(note,rowID,thisUserID,canEdit) {
     $cardTitle.append($editIcon)
   }
 
-  $cardTitle.append("<a target='_blank' href=/notes/" + note.dept + "/" + note.id + "/" + note.pdfID + ">"
+  $cardTitle.append("<a href=/notes/" + note.dept + "/" + note.id + "/" + note.pdfID + ">"
     + note.number + "</a>")
   $cardTitle.append($favIcon)
   $cardTitle.append($favCount)

@@ -168,17 +168,19 @@ $("#annotation-layer").on('click', function(evt) {
     }
 
     if (overlap == false) {
-        var content = prompt('Please enter your annotation: ');
-        if (content == null || content == "") {
-            // alert('Cancelled');
-        } else {
-            addAnnotation(annotation_coords["x"], annotation_coords["y"], annotation_page, content);
-        }
+      let content = prompt('Please enter your annotation: ');
+      if (content && content !== "") {
+        addAnnotation(annotation_coords["x"], annotation_coords["y"], annotation_page, content);
+      }
     } else {
-      $(`#${highlighted_annotation_id}`).addClass('active');
-      $("#comment-bar").animate({
-        scrollTop: $(`#${highlighted_annotation_id}`).position().top
-      }, 1000, 'swing')
+      $(`#${highlighted_annotation_id}`).addClass('active')
+      let commentPos = $(`#${highlighted_annotation_id}`).position().top - 10
+      $("#comment-bar").animate({ scrollTop: commentPos }, 1000, 'swing')
+      window.scroll({
+        top: commentPos,
+        left: 0,
+        behavior: 'smooth'
+      })
     }
 });
 
@@ -216,8 +218,9 @@ function drawAnnotationLayer(page_no) {
                 var rect = __CANVAS.getBoundingClientRect();
 
                 __CANVAS_CTX.beginPath();
-                __CANVAS_CTX.arc(centerX, centerY, 12, 0, 2 * Math.PI, false);
+                __CANVAS_CTX.arc(centerX, centerY, 10, 0, 2 * Math.PI, false);
                 __CANVAS_CTX.fillStyle = '#5cb85c';
+                __CANVAS_CTX.globalAlpha = 0.5;
                 __CANVAS_CTX.fill();
                 __CANVAS_CTX.lineWidth = 3;
                 __CANVAS_CTX.strokeStyle = '#4cae4c';
