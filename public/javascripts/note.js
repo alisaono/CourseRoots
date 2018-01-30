@@ -105,7 +105,7 @@ function showPage(page_no) {
                     }
                 }
                 if ($("#comment-bar .comment-item").length === 0) {
-                  $("#comment-bar").append("<p class='no-comments'>No comments on this page yet.<br/>Be the first!</p>")
+                  $("#comment-bar").append("<p class='no-comments'>No comments on this page yet. Be the first!</p>")
                 }
             });
         });
@@ -312,7 +312,7 @@ function isIntersect(point, circle) {
 }
 
 function addComment(id,user,isSelf,userID,content) {
-  let $comment = $(`<div id='${id}' class='fade-in comment-item'><a href='/users/${userID}'><h5>${user}</h5></a><p>${content}</p></div>`)
+  let $comment = $(`<div id='${id}' class='fade-in comment-item'><h5><a href='/users/${userID}'>${user}</a></h5><p>${content}</p></div>`)
   if (isSelf) {
     let $deleteIcon = $("<span class='delete'>&times</span>")
     $deleteIcon.on('click', function() { deleteAnnotation(id) })
