@@ -49,6 +49,10 @@
   background-color: rgba(0,0,0,.125);
 }
 
+.modal {
+  top: 86px;
+}
+
 #upload-modal .form-inline, #note-modal .form-inline {
   margin: 10px 0;
 }
