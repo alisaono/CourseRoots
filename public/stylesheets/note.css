@@ -34,7 +34,7 @@
 #comment-bar-wrapper h4 {
   margin: 20px 10px 0 10px;
   text-align: center;
-  color: #62a300;
+  color: rgba(0,0,0,.65);
 }
 
 #comment-info img {
@@ -121,8 +121,12 @@
 .comment-item .delete {
   float: right;
   margin: 0;
-  color: #545b62;
+  color: rgba(0,0,0,.65);
   cursor: pointer;
+}
+
+.comment-item a {
+  color: #62a300;
 }
 
 .no-comments {

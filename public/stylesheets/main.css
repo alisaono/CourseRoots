@@ -139,12 +139,12 @@ h2 {
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
-  color: #62a300;
 }
 
 h2 > a {
   margin-left: 10px;
   font-size: 0.6em;
+  color: #62a300;
 }
 
 .note-item {
@@ -153,6 +153,10 @@ h2 > a {
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+}
+
+.note-item a {
+  color: #62a300;
 }
 
 .note-item h5 > small {
