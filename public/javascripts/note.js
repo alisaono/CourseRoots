@@ -56,17 +56,8 @@ function showPage(page_no) {
 
     // Fetch the page
     __PDF_DOC.getPage(page_no).then(function(page) {
-        // As the canvas is of a fixed width we need to set the scale of the viewport accordingly
-        // not needed?
-        var scale_required = __PDF_CANVAS.width / page.getViewport(1).width;
-
-        let pdfCanvasWidth = $('#pdf-canvas').width();
-        scaleFactor = pdfCanvasWidth / 500;
-        console.log(pdfCanvasWidth)
-        console.log(scaleFactor)
-
         // Get viewport of the page at required scale
-        var viewport = page.getViewport(pdfCanvasWidth/page.getViewport(1).width);
+        var viewport = page.getViewport($('#pdf-canvas').width() / page.getViewport(1).width)
         // Set canvas height
         __PDF_CANVAS.width = viewport.width;
         __CANVAS.width = viewport.width;
@@ -104,7 +95,7 @@ function showPage(page_no) {
 
             $.getJSON("/api/notes/" + deptID + "/" + noteID,function(data){
                 let annotations = data.annotations;
-                for (a in annotations) {
+                for (let a in annotations) {
                     if(annotations[String(a)] !== null && annotations[String(a)].page == __CURRENT_PAGE) {
                         var content = annotations[String(a)].content;
                         var user = annotations[String(a)].user;
@@ -162,11 +153,11 @@ $("#annotation-layer").on('click', function(evt) {
       $(`#${highlighted_annotation_id}`).removeClass('active');
     }
 
-    for (a in __ANNOTATIONS) {
+    for (let a in __ANNOTATIONS) {
         const circle = {
             x: __ANNOTATIONS[a]["x"],
             y: __ANNOTATIONS[a]["y"],
-            radius: 10
+            radius: 0.01
         };
 
         if (isIntersect(annotation_coords, circle)) {
@@ -203,27 +194,29 @@ $("#hide-annotation-layer").on('click',function(){
   $("#show-annotation-layer").show()
 })
 
+// Returns the coords in the unit of PDF width.
 function getMousePos(canvas, evt) {
-    var rect = canvas.getBoundingClientRect();
+    let rect = canvas.getBoundingClientRect()
+    let pdfWidth = $('#pdf-canvas').width()
     return {
-        x: (evt.clientX - rect.left)/scaleFactor,
-        y: (evt.clientY - rect.top)/scaleFactor
-    };
+        x: (evt.clientX - rect.left) / pdfWidth,
+        y: (evt.clientY - rect.top) / pdfWidth,
+    }
 }
 
 // draw annotation pins on layer
 function drawAnnotationLayer(page_no) {
     $.getJSON("/api/notes/" + deptID + "/" + noteID,function(data){
-        let annotations = data.annotations;
-        for (a in annotations) {
+        let annotations = data.annotations
+        let pdfWidth = $('#pdf-canvas').width()
+        for (let a in annotations) {
             if(annotations[String(a)] !== null && annotations[String(a)].page == __CURRENT_PAGE) {
-                var centerX = annotations[String(a)].x_coords;
-                var centerY = annotations[String(a)].y_coords;
+                var centerX = annotations[String(a)].x_coords * pdfWidth;
+                var centerY = annotations[String(a)].y_coords * pdfWidth;
                 var rect = __CANVAS.getBoundingClientRect();
-                // var scaleFactor = 2.192;
 
                 __CANVAS_CTX.beginPath();
-                __CANVAS_CTX.arc(centerX*scaleFactor, centerY*scaleFactor, 12, 0, 2 * Math.PI, false);
+                __CANVAS_CTX.arc(centerX, centerY, 12, 0, 2 * Math.PI, false);
                 __CANVAS_CTX.fillStyle = '#5cb85c';
                 __CANVAS_CTX.fill();
                 __CANVAS_CTX.lineWidth = 3;
@@ -307,7 +300,7 @@ function deleteAnnotation(id) {
 }
 
 function isIntersect(point, circle) {
-  return Math.sqrt((point.x-circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.radius;
+  return Math.sqrt((point.x - circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.radius;
 }
 
 function addComment(id,user,isSelf,content) {
