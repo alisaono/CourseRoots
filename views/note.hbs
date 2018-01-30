@@ -11,99 +11,14 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link href="/stylesheets/main.css" rel="stylesheet">
+    <link href="/stylesheets/note.css" rel="stylesheet">
 
-	<style>
-		/* The switch - the box around the slider */
-		.switch {
-		  position: relative;
-		  display: block;
-		  width: 30px;
-		  height: 17px;
-		}
-
-		/* Hide default HTML checkbox */
-		.switch input {display:none;}
-
-		/* The slider */
-		.slider {
-		  position: absolute;
-		  cursor: pointer;
-		  top: 0;
-		  left: 0;
-		  right: 0;
-		  bottom: 0;
-		  background-color: #ccc;
-		  -webkit-transition: .4s;
-		  transition: .4s;
-		}
-
-		.slider:before {
-		  position: absolute;
-		  content: "";
-		  height: 13px;
-		  width: 13px;
-		  left: 2px;
-		  bottom: 2px;
-		  background-color: white;
-		  -webkit-transition: .4s;
-		  transition: .4s;
-		}
-
-		input:checked + .slider {
-		  background-color: #2196F3;
-		}
-
-		input:focus + .slider {
-		  box-shadow: 0 0 1px #2196F3;
-		}
-
-		input:checked + .slider:before {
-		  -webkit-transform: translateX(13px);
-		  -ms-transform: translateX(13px);
-		  transform: translateX(13px);
-		}
-		.slider.round {
-		  border-radius: 17px;
-		}
-
-		.slider.round:before {
-		  border-radius: 50%;
-		}
-
-		.material-icons{
-			cursor: pointer;
-		}
-
-		@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-		@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-		@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-
-		.fade-in {
-			opacity:0;  /* make things invisible upon start */
-			-webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
-			-moz-animation:fadeIn ease-in 1;
-			animation:fadeIn ease-in 1;
-			 
-			-webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
-			-moz-animation-fill-mode:forwards;
-			animation-fill-mode:forwards;
-			 
-			-webkit-animation-duration:0.25s;
-			-moz-animation-duration:0.25s;
-			animation-duration:0.25s;
-
-			-webkit-transition: background-color 0.25s ease-out;
-			-moz-transition: background-color 0.25s ease-out;
-			-o-transition: background-color 0.25s ease-out;
-			transition: background-color 0.25s ease-out;
-		}
-	</style>
-	<script type="text/javascript" src="https://rawgithub.com/mozilla/pdf.js/gh-pages/build/pdf.js"></script>
+	  <script type="text/javascript" src="https://rawgithub.com/mozilla/pdf.js/gh-pages/build/pdf.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
 
-<body>
+  <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
@@ -116,10 +31,8 @@
             <li class="nav-item">
               <a class="nav-link" href="/me">{{thisUser.first_name}}</a>
             </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="/home">Home
-                <span class="sr-only">(current)</span>
-              </a>
+            <li class="nav-item">
+              <a class="nav-link" href="/home">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/logout">
@@ -131,46 +44,46 @@
       </div>
     </nav>
 
-	<div class="container">
-	    <div class="row" id="pdf-meta">
-	        <div class="col-sm-4" id="pdf-buttons">
-	            <button id="pdf-prev" class="btn btn-success">Previous</button>
-	            <button id="pdf-next" class="btn btn-success">Next</button>
-	        </div>
-	        <div class="col-sm-4" id="page-count-container" style="display:inline-block;">Page <input type="text" id="pdf-current-page" style="width: 50px"> of <div id="pdf-total-pages" style="display:inline-block;"></div></div>
-	        <div class="col-sm-2" id="annotation-layer-control">
-		        <label class="switch">
-					<input id="annotation-layer-checkbox" type="checkbox" checked>
-					<span class="slider round"></span>
-				</label>
-			</div> 
-			<div class="col-sm-2">
-				<!--get an info mark on here if more time? <p><a href="#" title="annotation-information" data-toggle="popover" data-trigger="hover" data-content="Show Annotation Layer (You must have this enabled to add annotations)">
-		        	<span class="glyphicon glyphicon-info-sign"></span>
-		        </a></p>-->
-		    </div>   
-	    </div>
-		<div class="row" id="pdf-main-container">
-		    <div class="col-sm-9" id="pdf-contents">
-		    	<div id="pdf-loader">Loading document ...</div>
-		        <canvas id="pdf-canvas" class="fade-in"
-			    	style="position: absolute; width: 500px; z-index: 0;"></canvas>
-				<canvas id="annotation-layer" class="fade-in"
-				    style="position: absolute; width: 500px; z-index: 1;"></canvas>
-				<div id="page-loader">Loading page ...</div>
-		    </div>
-			<div class="col-sm-3" id="comment-bar" style="z-index: 2; height: 100%; overflow-y: scroll">
-			</div>
-		</div>
-	</div>
-</body>
+    <div class="container">
+      <div class="row" id="pdf-meta">
+        <div class="col-sm-4" id="pdf-buttons">
+          <button id="pdf-prev" class="btn btn-success">Previous</button>
+          <button id="pdf-next" class="btn btn-success">Next</button>
+        </div>
+        <div class="col-sm-4" id="page-count-container" style="display:inline-block;">Page <input type="text" id="pdf-current-page" style="width: 50px"> of <div id="pdf-total-pages" style="display:inline-block;"></div></div>
+        <div class="col-sm-2" id="annotation-layer-control">
+          <label class="switch">
+            <input id="annotation-layer-checkbox" type="checkbox" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="col-sm-2">
+        <!--get an info mark on here if more time? <p><a href="#" title="annotation-information" data-toggle="popover" data-trigger="hover" data-content="Show Annotation Layer (You must have this enabled to add annotations)">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        </a></p>-->
+        </div>
+      </div>
+  		<div class="row" id="pdf-main-container">
+        <div class="col-sm-9" id="pdf-contents">
+          <div id="pdf-loader">Loading document ...</div>
+          <canvas id="pdf-canvas" class="fade-in"
+          style="position: absolute; width: 500px; z-index: 0;"></canvas>
+          <canvas id="annotation-layer" class="fade-in"
+          style="position: absolute; width: 500px; z-index: 1;"></canvas>
+          <div id="page-loader">Loading page ...</div>
+        </div>
+  			<div class="col-sm-3" id="comment-bar" style="z-index: 2; height: 100%; overflow-y: scroll">
+  			</div>
+  		</div>
+    </div>
 
-	<script>
-		const username = "{{thisUser.kerbero}}"
-		const userID = "{{thisUser.mit_id}}"
-		const noteID = "{{noteID}}"
-		const deptID = "{{deptID}}"
-		const pdfID = "{{pdfID}}"
-	</script>
-	<script src="/javascripts/note.js"></script>
+    <script>
+      const username = "{{thisUser.kerbero}}"
+      const userID = "{{thisUser.mit_id}}"
+      const noteID = "{{noteID}}"
+      const deptID = "{{deptID}}"
+      const pdfID = "{{pdfID}}"
+    </script>
+    <script src="/javascripts/note.js"></script>
+  </body>
 </html>

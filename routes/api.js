@@ -337,14 +337,10 @@ router.post('/annotate', function(req, res, next) {
     return;
   }
 
-  console.log("annotate route");
-  console.log(req.body);
-
   let deptID = req.body.deptID;
   let noteID = req.body.noteID;
   let newAnnotationRef = database.ref("/note_by_dept/"+deptID+"/"+noteID+"/annotations").push();
   let annotationID = newAnnotationRef.key;
-
 
   let newValues = {};
 
@@ -353,8 +349,6 @@ router.post('/annotate', function(req, res, next) {
   newValues['user'] = req.user.kerbero;
   newValues['x_coords'] = req.body.x_coords;
   newValues['y_coords'] = req.body.y_coords;
-
-  console.log(newValues)
 
   database.ref("/note_by_dept/"+deptID+"/"+noteID+"/annotations/" + annotationID).update(newValues, function(error) {
     let message = error ? error : "";
@@ -367,9 +361,6 @@ router.post('/annotate/edit', function(req, res, next) {
     res.render('error',{ message : "Error 401 - Unauthorized" });
     return;
   }
-
-  console.log("edit annotation route");
-  console.log(req.body);
 
   let deptID = req.body.deptID;
   let noteID = req.body.noteID;
@@ -392,9 +383,6 @@ router.post('/annotate/delete', function(req, res, next) {
     res.render('error',{ message : "Error 401 - Unauthorized" });
     return;
   }
-
-  console.log("delete annotation route");
-  console.log(req.body);
 
   let deptID = req.body.deptID;
   let noteID = req.body.noteID;
