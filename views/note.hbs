@@ -73,13 +73,37 @@
 		.material-icons{
 			cursor: pointer;
 		}
+
+		@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+		@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+		@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+		.fade-in {
+			opacity:0;  /* make things invisible upon start */
+			-webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+			-moz-animation:fadeIn ease-in 1;
+			animation:fadeIn ease-in 1;
+			 
+			-webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+			-moz-animation-fill-mode:forwards;
+			animation-fill-mode:forwards;
+			 
+			-webkit-animation-duration:0.25s;
+			-moz-animation-duration:0.25s;
+			animation-duration:0.25s;
+
+			-webkit-transition: background-color 0.25s ease-out;
+			-moz-transition: background-color 0.25s ease-out;
+			-o-transition: background-color 0.25s ease-out;
+			transition: background-color 0.25s ease-out;
+		}
 	</style>
 	<script type="text/javascript" src="https://rawgithub.com/mozilla/pdf.js/gh-pages/build/pdf.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
 
-<body style="overflow-y: visible">
+<body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
@@ -110,8 +134,8 @@
 	<div class="container">
 	    <div class="row" id="pdf-meta">
 	        <div class="col-sm-4" id="pdf-buttons">
-	            <button id="pdf-prev">Previous</button>
-	            <button id="pdf-next">Next</button>
+	            <button id="pdf-prev" class="btn btn-success">Previous</button>
+	            <button id="pdf-next" class="btn btn-success">Next</button>
 	        </div>
 	        <div class="col-sm-4" id="page-count-container" style="display:inline-block;">Page <input type="text" id="pdf-current-page" style="width: 50px"> of <div id="pdf-total-pages" style="display:inline-block;"></div></div>
 	        <div class="col-sm-2" id="annotation-layer-control">
@@ -129,9 +153,9 @@
 		<div class="row" id="pdf-main-container">
 		    <div class="col-sm-9" id="pdf-contents">
 		    	<div id="pdf-loader">Loading document ...</div>
-		        <canvas id="pdf-canvas"
+		        <canvas id="pdf-canvas" class="fade-in"
 			    	style="position: absolute; width: 500px; z-index: 0;"></canvas>
-				<canvas id="annotation-layer"
+				<canvas id="annotation-layer" class="fade-in"
 				    style="position: absolute; width: 500px; z-index: 1;"></canvas>
 				<div id="page-loader">Loading page ...</div>
 		    </div>
@@ -140,14 +164,7 @@
 		</div>
 	</div>
 </body>
-<!--
-	<div id="comment-bar" style="
-    float: right;
-    z-index: 1;
-    width: 30%;
-    height: 100%;
-    background-color: #c3c3c3;">
-	</div>-->
+
 	<script>
 		const username = "{{thisUser.kerbero}}"
 		const userID = "{{thisUser.mit_id}}"
