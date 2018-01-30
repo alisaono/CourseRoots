@@ -10,6 +10,7 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="/stylesheets/main.css" rel="stylesheet">
 
 	<style>
 		/* The switch - the box around the slider */
@@ -74,41 +75,72 @@
 		}
 	</style>
 	<script type="text/javascript" src="https://rawgithub.com/mozilla/pdf.js/gh-pages/build/pdf.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
 
-	<div id="pdf-main-container" style="position: absolute; width: 70%">
-        <div id="pdf-meta" style="float:right">
-            <div id="pdf-buttons">
-                <button id="pdf-prev">Previous</button>
-                <button id="pdf-next">Next</button>
-            </div>
-            <div id="page-count-container" style="display:inline-block;">Page <input type="text" id="pdf-current-page" style="width: 50px"> of <div id="pdf-total-pages" style="display:inline-block;"></div></div>
-	        <div id="annotation-layer-control">
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="/home">CourseRoots</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/me">{{thisUser.first_name}}</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/home">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">
+                <img src="/images/logout.png" alt="log out">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+	<div class="container">
+	    <div class="row" id="pdf-meta">
+	        <div class="col-sm-4" id="pdf-buttons">
+	            <button id="pdf-prev">Previous</button>
+	            <button id="pdf-next">Next</button>
+	        </div>
+	        <div class="col-sm-4" id="page-count-container" style="display:inline-block;">Page <input type="text" id="pdf-current-page" style="width: 50px"> of <div id="pdf-total-pages" style="display:inline-block;"></div></div>
+	        <div class="col-sm-2" id="annotation-layer-control">
 		        <label class="switch">
-					<input id="annotation-layer-checkbox" type="checkbox">
+					<input id="annotation-layer-checkbox" type="checkbox" checked>
 					<span class="slider round"></span>
 				</label>
-				<!-- disabled for style reasons <p style="margin:0"> Show Annotation Layer (You must have this enabled to add annotations)</p> -->
-			</div>
-			<div id="comment-bar" style="
-		    float: right;
-		    z-index: 1;
-		    width: 20%;
-		    height: 100%;
-		    background-color: #c3c3c3;">
-			</div>      
-        </div>
-	    <div id="pdf-loader">Loading document ...</div>
-	    <div id="pdf-contents" style="position: relative">
-	        <canvas id="pdf-canvas"
-		    	style="width: 70%; position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
-			<canvas id="annotation-layer"
-			    style="width: 70%; position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
-			<div id="page-loader">Loading page ...</div>
+			</div> 
+			<div class="col-sm-2">
+				<!--get an info mark on here if more time? <p><a href="#" title="annotation-information" data-toggle="popover" data-trigger="hover" data-content="Show Annotation Layer (You must have this enabled to add annotations)">
+		        	<span class="glyphicon glyphicon-info-sign"></span>
+		        </a></p>-->
+		    </div>   
 	    </div>
+		<div class="row" id="pdf-main-container">
+		    <div class="col-sm-9" id="pdf-contents">
+		    	<div id="pdf-loader">Loading document ...</div>
+		        <canvas id="pdf-canvas"
+			    	style="position: absolute; width: 95%; z-index: 0;"></canvas>
+				<canvas id="annotation-layer"
+				    style="position: absolute; width: 95%; z-index: 1;"></canvas>
+				<div id="page-loader">Loading page ...</div>
+		    </div>
+			<div class="col-sm-3" id="comment-bar" style="z-index: 2; height: 100%">
+				<div style="background-color: #c3c3c3; margin-bottom: 5px; padding: 5px"><h3>hfes;alfe</h3><p>jkdl</p></div>
+			</div>
+		</div>
 	</div>
+</body>
 <!--
 	<div id="comment-bar" style="
     float: right;

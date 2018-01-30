@@ -10,12 +10,9 @@ var __PDF_DOC,
 PDFJS.disableworker = true;
 // URL of PDF document
 var url = "https://s3.amazonaws.com/sinusoidalsuite-courseroots/" + pdfID;
-// var url = "https://s3.amazonaws.com/sinusoidalsuite-courseroots/18.06_1.pdf";
-// var url = pdf_url;
 showPDF(url);
 
 //TODO: add comment bar that shows up with annotation layer - blocks for individual annotations and hovering over marker should go to specific comment
-//TODO: add star checkbox (similar to show/hide annotation toggle) to add popularity to document - first figure out how to push data to firebase
 
 /*
 // change to annotations
@@ -47,13 +44,6 @@ function showPDF(pdf_url) {
         $("#pdf-loader").hide();
         $("#pdf-contents").show();
         $("#pdf-total-pages").text(__TOTAL_PAGES);
-
-        var url_array = document.URL.split('/');
-        var url_key = url_array[url_array.length-1]; // document ID
-        dept_no = url_array[url_array.length-2]; // department number
-
-        // var config = {};
-        // firebase.initializeApp(config);
 
         // Show the first page
         showPage(1);
@@ -110,24 +100,39 @@ function showPage(page_no) {
             $("#page-loader").hide();
 
             drawAnnotationLayer(page_no);
-            /*
-            __CANVAS.addEventListener('hover', (e) => {
-                const pos = {
-                    x: e.clientX,
-                    y: e.clientY
-                };
+            var rect = __CANVAS.getBoundingClientRect();
 
-                const circle = {
-                    x: centerX,
-                    y: centerY,
-                    radius: 10
-                };
+            $("#comment-bar").empty();
 
-                if (isIntersect(mousePoint, circle)) {
-                    alert('click on circle: ');
-                }  
-            });*/
-            // console.log(__ANNOTATIONS);
+            $.getJSON("/api/notes/" + deptID + "/" + noteID,function(data){
+                let annotations = data.annotations;
+                for (a in annotations) {
+                    if(annotations[String(a)] !== null && annotations[String(a)].page == __CURRENT_PAGE) {
+                        var content = annotations[String(a)].content;
+                        var user = annotations[String(a)].user;
+                        $("#comment-bar").append("<div id='" + String(a) + "' style='background-color: #c3c3c3; margin-bottom: 5px; padding: 5px'><h3>" 
+                            + user + "</h3><p>" + content + "</p></div>");
+                    }
+                }
+            });
+            for (a in __ANNOTATIONS) {
+                __CANVAS.addEventListener('hover', (e) => {
+                    const pos = {
+                        x: e.clientX - rect.left,
+                        y: e.clientY - rect.top
+                    };
+
+                    const circle = {
+                        x: __ANNOTATIONS[String(a)].x_coords,
+                        y: __ANNOTATIONS[String(a)].y_coords,
+                        radius: 10
+                    };
+
+                    if (isIntersect(mousePoint, circle)) {
+                        alert('click on circle: ');
+                    }  
+                });
+            }
         });
     });
 }
@@ -144,6 +149,12 @@ $("#pdf-next").on('click', function() {
         showPage(++__CURRENT_PAGE);
 });
 
+// Navigation to a specified page
+document.getElementById("pdf-current-page").addEventListener("input", function(evt){
+    showPage(Number(this.value));
+});
+
+// Click to add annotation (potentially prevent overlapping pins?)
 $("#annotation-layer").on('click', function(evt) {
     annotation_coords = getMousePos(__CANVAS, evt);
     annotation_page = __CURRENT_PAGE;
@@ -151,29 +162,19 @@ $("#annotation-layer").on('click', function(evt) {
     if (content == null || content == "") {
         alert('Cancelled');
     } else {
-        addAnnotation(annotation_coords[0], annotation_coords[1], annotation_page, content);
+        addAnnotation(annotation_coords["x"], annotation_coords["y"], annotation_page, content);
     }
 });
 
+// Toggle annotation layer on/off
 $('#annotation-layer-checkbox').change(function(){
     if($(this).is(':checked')) {
-        showAnnotations();
+        $("#annotation-layer").show();
+        $("#comment-bar").show();
     } else {
-        hideAnnotations();
+        $("#annotation-layer").hide();
+        $("#comment-bar").hide();
     }
-});
-
-$('#favorite-control').on('click', function(evt) {
-    // TODO: modify firebase popularity field and user favorites field
-    if(document.getElementById('favorite-control').innerHTML == '<i id="star" class="material-icons">star</i>') {
-        document.getElementById('favorite-control').innerHTML = '<i class="material-icons">star_border</i>';
-    } else {
-        document.getElementById('favorite-control').innerHTML = '<i id="star" class="material-icons">star</i>';
-    }
-});
-
-document.getElementById("pdf-current-page").addEventListener("input", function(evt){
-    showPage(Number(this.value));
 });
 
 function getMousePos(canvas, evt) {
@@ -184,6 +185,7 @@ function getMousePos(canvas, evt) {
     };
 }
 
+// draw annotation pins on layer
 function drawAnnotationLayer(page_no) {
     $.getJSON("/api/notes/" + deptID + "/" + noteID,function(data){
         let annotations = data.annotations;
@@ -191,6 +193,7 @@ function drawAnnotationLayer(page_no) {
             if(annotations[String(a)] !== null && annotations[String(a)].page == __CURRENT_PAGE) {
                 var centerX = annotations[String(a)].x_coords;
                 var centerY = annotations[String(a)].y_coords;
+                var rect = __CANVAS.getBoundingClientRect();
 
                 __CANVAS_CTX.beginPath();
                 __CANVAS_CTX.arc(centerX, centerY, 10, 0, 2 * Math.PI, false);
@@ -200,22 +203,12 @@ function drawAnnotationLayer(page_no) {
                 __CANVAS_CTX.strokeStyle = '#003300';
                 __CANVAS_CTX.stroke();
 
-                //TODO: figure out why annotations updates one slide late
-                __ANNOTATIONS.push(String(a));
             }
         }
     });
 }
 
-function showAnnotations() {
-    $("#annotation-layer").show();
-}
-
-function hideAnnotations() {
-    $("#annotation-layer").hide();
-}
-
-// TODO: update firebase with annotation data
+// update Firebase with annotation data
 function addAnnotation(x_coord, y_coord, page, content) {
     var new_annotation = {
       content: content,
@@ -226,8 +219,6 @@ function addAnnotation(x_coord, y_coord, page, content) {
       deptID: deptID,
       noteID: noteID
     };
-
-    console.log(new_annotation)
 
     $.ajax({
         url: '/api/annotate',
