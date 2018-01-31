@@ -20,7 +20,7 @@
 }
 
 #pdf-loader, #page-loader {
-  color: #ffffff;
+  color: rgba(0,0,0,0.8);
 }
 
 #pdf-contents {
@@ -62,7 +62,7 @@
 
 #info-popover p {
   text-align: left;
-  color: #8e8e8e;
+  color: rgba(0,0,0,.65);
   font-size: 0.9rem;
   margin-bottom: 10px;
 }

@@ -21,9 +21,29 @@ nav {
       border: 0;
       font-size: 12px !important;
       line-height: 1.42857143 !important;
-      letter-spacing: 4px;
       border-radius: 0;
-      font-family: Montserrat, sans-serif;
+}
+
+.navbar-header .navbar-brand {
+  font-family: Montserrat, sans-serif;
+  letter-spacing: 4px;
+}
+
+.nav-item {
+  margin-left: 5px;
+  letter-spacing: 2px;
+}
+
+.nav-link {
+  font-size: 1.1rem;
+}
+
+.nav-item:not(.active) .nav-link {
+  color: #ffffff;
+}
+
+.navbar-dark .navbar-nav .active>.nav-link {
+  color: rgba(0,0,0,0.4);
 }
 
 .nav-link img {
