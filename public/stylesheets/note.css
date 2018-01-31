@@ -3,8 +3,11 @@
 }
 
 #pdf-main-container {
-  padding: 20px;
+  background-color: #ced4da;
+  border: solid 1px #ced4da;
+  padding: 20px 0 20px 20px;
   margin-top: 20px;
+  overflow-x: scroll;
 }
 
 #page-count-container {
@@ -25,6 +28,21 @@
 
 #pdf-contents {
   position: relative;
+  min-width: 680px;
+}
+
+#pdf-canvas, #annotation-layer {
+  position: absolute;
+  width: 100%;
+  padding-right: 20px;
+}
+
+#pdf-canvas {
+  z-index: 0;
+}
+
+#annotation-layer {
+  z-index: 1;
 }
 
 #show-annotation-layer {
@@ -141,5 +159,11 @@
   }
   #pdf-meta button {
     margin: 10px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  #pdf-main-container {
+    margin: 20px 20px 0 20px;
   }
 }
