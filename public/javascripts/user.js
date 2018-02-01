@@ -30,7 +30,7 @@ $(document).ready(function(){
     // Populate the intro field.
     if (data.introduction !== "") {
       let $introRow = $("<div class='row'></div>")
-      $introRow.append("<p><b>Year: </b><span>" + sanitize(data.introduction) + "</span></p>")
+      $introRow.append("<p><span>" + sanitize(data.introduction) + "</span></p>")
       $("#prof-info").append($introRow)
     }
 
